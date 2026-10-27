@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { normalizeJid } from "@/lib/jid-utils";
+import { normalizeJid, resolveRecipientJid } from "@/lib/jid-utils";
 import { waManager } from "@/modules/whatsapp/manager";
 import { onMessageSent } from "@/lib/webhook";
 import Sticker from "wa-sticker-formatter";
@@ -214,6 +214,7 @@ export class ChatService {
         if (!instance || !instance.socket) {
             throw new Error("WhatsApp session is disconnected or not found");
         }
+        jid = await resolveRecipientJid(instance.socket, jid);
 
         // Handle quoted/reply message
         let quotedOption: any = undefined;
@@ -272,8 +273,8 @@ export class ChatService {
             try {
                 const { buffer } = await safeFetchBuffer(url, { maxBytes: 10 * 1024 * 1024 });
                 const sticker = new Sticker(buffer, {
-                    pack: msgPayload.sticker.pack || "WA-AKG Bot",
-                    author: msgPayload.sticker.author || "WA-AKG",
+                    pack: msgPayload.sticker.pack || "Attomus Zap Bot",
+                    author: msgPayload.sticker.author || "Attomus Zap",
                     type: "full",
                     quality: 50
                 });
@@ -406,8 +407,8 @@ export class ChatService {
             content = { document: buffer, mimetype, fileName, ...messageOptions };
         } else if (type === 'sticker') {
             const sticker = new Sticker(buffer, {
-                pack: "WA-AKG Bot",
-                author: "WA-AKG",
+                pack: "Attomus Zap Bot",
+                author: "Attomus Zap",
                 type: "full",
                 quality: 50
             });

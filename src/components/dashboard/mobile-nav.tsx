@@ -12,7 +12,7 @@ import { LanguageSwitcher } from "@/components/language-switcher";
 import { navGroups } from "./sidebar-nav";
 import pkg from "../../../package.json";
 
-export function MobileNav({ appName = "WA-AKG" }: { appName?: string }) {
+export function MobileNav({ appName = "Attomus Zap" }: { appName?: string }) {
     const [open, setOpen] = useState(false);
     const pathname = usePathname();
     const { data: session } = useSession();

@@ -21,7 +21,7 @@ export default function StickerPage() {
     const [loading, setLoading] = useState(false);
 
     // Advanced options
-    const [pack, setPack] = useState("WA-AKG");
+    const [pack, setPack] = useState("Attomus Zap");
     const [author, setAuthor] = useState("User");
     const [quality, setQuality] = useState(50);
     const [type, setType] = useState("full");

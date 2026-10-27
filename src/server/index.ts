@@ -93,8 +93,7 @@ app.prepare().then(async () => {
   waManager.setup(io);
   waManager.loadSessions();
 
-  // Start Scheduler
-  import("../modules/whatsapp/scheduler").then(m => m.startScheduler());
+  // Scheduled messages are processed by initScheduler() in lib/cron.ts (started by waManager)
 
   // Cloudflare 520 Fix: increase keep-alive timeout so Node doesn't kill idle connections that Cloudflare expects to reuse
   // See: https://github.com/vercel/next.js/issues/48962
@@ -111,7 +110,7 @@ app.prepare().then(async () => {
 
     if (isTelemetryEnabled) {
       const MONITOR_URL = "https://api-wa-akg.aikeigroup.net/api/ping";
-      const APP_NAME = process.env.APP_NAME || "WA-AKG";
+      const APP_NAME = process.env.APP_NAME || "Attomus Zap";
       const APP_VERSION = `v${pkg.version}`;
 
       const sendHeartbeat = async () => {
