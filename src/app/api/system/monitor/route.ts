@@ -6,6 +6,57 @@ import { prisma } from "@/lib/prisma";
 // Ensure this route is dynamic
 export const dynamic = "force-dynamic";
 
+// systeminformation shells out to PowerShell/WMI on Windows (~2s per call) while the
+// dashboard polls every 3s, so cache what rarely changes and share one live snapshot.
+const SNAPSHOT_TTL_MS = 5_000;
+const DISK_TTL_MS = 60_000;
+
+let osInfoPromise: ReturnType<typeof si.osInfo> | null = null;
+let diskCache: { at: number; value: Awaited<ReturnType<typeof si.fsSize>> } | null = null;
+let snapshotCache: { at: number; value: Awaited<ReturnType<typeof readSnapshot>> } | null = null;
+let snapshotInFlight: ReturnType<typeof readSnapshot> | null = null;
+
+async function readDisks() {
+    if (diskCache && Date.now() - diskCache.at < DISK_TTL_MS) return diskCache.value;
+    const value = await si.fsSize();
+    diskCache = { at: Date.now(), value };
+    return value;
+}
+
+async function readSnapshot() {
+    osInfoPromise ??= si.osInfo();
+    const [cpu, mem, os, fsSize, networkStats] = await Promise.all([
+        si.currentLoad(),
+        si.mem(),
+        osInfoPromise,
+        readDisks(),
+        si.networkStats()
+    ]);
+    return { cpu, mem, os, fsSize, networkStats };
+}
+
+// Serve the last snapshot immediately and refresh it in the background once stale;
+// only the very first request after startup waits for a full read.
+async function getSnapshot() {
+    if (snapshotCache && Date.now() - snapshotCache.at < SNAPSHOT_TTL_MS) return snapshotCache.value;
+    const refresh = refreshSnapshot();
+    if (!snapshotCache) return refresh;
+    refresh.catch(error => console.error("Monitor background refresh failed:", error));
+    return snapshotCache.value;
+}
+
+function refreshSnapshot() {
+    snapshotInFlight ??= readSnapshot()
+        .then(value => {
+            snapshotCache = { at: Date.now(), value };
+            return value;
+        })
+        .finally(() => {
+            snapshotInFlight = null;
+        });
+    return snapshotInFlight;
+}
+
 export async function GET(req: NextRequest) {
     try {
         const auth = await getAuthenticatedUser(req);
@@ -18,15 +69,7 @@ export async function GET(req: NextRequest) {
             return NextResponse.json({ status: false, message: "Forbidden - Superadmin only" }, { status: 403 });
         }
 
-        // Fetch system stats in parallel for speed
-        const [cpu, mem, os, diskLayout, fsSize, networkStats] = await Promise.all([
-            si.currentLoad(),
-            si.mem(),
-            si.osInfo(),
-            si.diskLayout(),
-            si.fsSize(),
-            si.networkStats()
-        ]);
+        const { cpu, mem, os, fsSize, networkStats } = await getSnapshot();
 
         // Calculate Process (Node.js) Memory
         const processMemory = process.memoryUsage();
