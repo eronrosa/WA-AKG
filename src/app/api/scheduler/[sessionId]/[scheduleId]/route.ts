@@ -1,4 +1,5 @@
 import { NextResponse, NextRequest } from "next/server";
+import { normalizeJid } from "@/lib/jid-utils";
 import { prisma } from "@/lib/prisma";
 import { getAuthenticatedUser, canAccessSession } from "@/lib/api-auth";
 import moment from "moment-timezone";
@@ -29,7 +30,7 @@ export async function PUT(
         // Fetch system timezone
         // @ts-ignore
         const systemConfig = await prisma.systemConfig.findUnique({ where: { id: "default" } });
-        const timezone = systemConfig?.timezone || "Asia/Jakarta";
+        const timezone = systemConfig?.timezone || "America/Sao_Paulo";
 
         console.log(`[Scheduler:PUT] Received sendAt: ${sendAt}, using timezone: ${timezone}`);
         const utcDate = moment.tz(sendAt, timezone).toDate();
@@ -52,7 +53,7 @@ export async function PUT(
         const updated = await prisma.scheduledMessage.update({
             where: { id: scheduleId },
             data: {
-                jid,
+                jid: normalizeJid(jid),
                 content,
                 sendAt: utcDate,
                 mediaUrl: mediaUrl || null,

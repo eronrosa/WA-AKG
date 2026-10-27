@@ -11,15 +11,55 @@ export function isLidJid(jid: string | undefined | null): boolean {
 
 /**
  * Normalize a JID to standard format.
- * Primarily ensures that @c.us is converted to @s.whatsapp.net.
+ * Converts @c.us to @s.whatsapp.net and strips "+", spaces and dashes typed
+ * into phone numbers (e.g. "+55 55 99696-1098@s.whatsapp.net").
  * Does not touch @g.us or @broadcast.
  */
 export function normalizeJid(jid: string | undefined | null): string {
     if (!jid) return "";
-    if (jid.endsWith("@c.us")) {
-        return jid.replace("@c.us", "@s.whatsapp.net");
+    let normalized = jid.trim();
+    if (normalized.endsWith("@c.us")) {
+        normalized = normalized.replace("@c.us", "@s.whatsapp.net");
     }
-    return jid;
+    if (normalized.endsWith("@s.whatsapp.net")) {
+        const [user] = normalized.split("@");
+        normalized = `${user.replace(/[^\d:]/g, "")}@s.whatsapp.net`;
+    }
+    return normalized;
+}
+
+/**
+ * Resolve the JID WhatsApp actually uses for a phone number before sending.
+ *
+ * Brazilian mobiles registered before the 9th-digit change are still known to
+ * WhatsApp without the extra 9 (55 + DDD + 8 digits). Sending to the other form
+ * is accepted silently but never delivered, so we ask WhatsApp which variant exists.
+ * Falls back to the normalized JID when the lookup fails or nothing is found.
+ */
+export async function resolveRecipientJid(
+    socket: { onWhatsApp: (...ids: string[]) => Promise<{ exists: boolean; jid: string }[] | undefined> },
+    jid: string
+): Promise<string> {
+    const normalized = normalizeJid(jid);
+    if (!normalized.endsWith("@s.whatsapp.net")) return normalized;
+
+    const number = normalized.split("@")[0].split(":")[0];
+    const candidates = [number];
+    if (/^55\d{2}9\d{8}$/.test(number)) {
+        candidates.push(number.slice(0, 4) + number.slice(5));
+    } else if (/^55\d{2}\d{8}$/.test(number)) {
+        candidates.push(number.slice(0, 4) + "9" + number.slice(4));
+    }
+
+    try {
+        for (const candidate of candidates) {
+            const [result] = (await socket.onWhatsApp(candidate)) || [];
+            if (result?.exists) return result.jid;
+        }
+    } catch (error) {
+        logger.warn("JID", `onWhatsApp lookup failed for ${number}, sending to ${normalized}`);
+    }
+    return normalized;
 }
 
 /**

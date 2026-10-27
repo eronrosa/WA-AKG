@@ -71,7 +71,7 @@ function InteractiveContent() {
     // Custom composer state
     const [title, setTitle] = useState("Pengumuman Penting");
     const [body, setBody] = useState("Halo! Ini adalah pesan interaktif native flow WhatsApp. Silakan pilih aksi di bawah:");
-    const [footer, setFooter] = useState("Powered by WA-AKG Bot");
+    const [footer, setFooter] = useState("Powered by Attomus Zap Bot");
     const [buttons, setButtons] = useState<InteractiveButtonItem[]>([
         { id: "1", type: "quick_reply", displayText: "Konfirmasi Pesanan", value: "confirm_order" },
         { id: "2", type: "cta_url", displayText: "Kunjungi Website", value: "https://google.com" },

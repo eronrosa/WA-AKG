@@ -253,7 +253,7 @@ model BotConfig {
   enabled       Boolean  @default(true)
   
   // Bot Command Access
-  botName       String   @default("WA-AKG Bot")
+  botName       String   @default("Attomus Zap Bot")
   botMode       AccessMode @default(OWNER)
   botAllowedJids Json?     // Array of JIDs ["628123@s.whatsapp.net"]
   botBlockedJids Json?     // Array of JIDs ["628123@s.whatsapp.net"] for BLACKLIST mode
@@ -291,10 +291,10 @@ model BotConfig {
 
 model SystemConfig {
   id                 String   @id @default("default") // Singleton ID
-  appName            String   @default("WA-AKG")
+  appName            String   @default("Attomus Zap")
   logoUrl            String?
   faviconUrl         String?
-  timezone           String   @default("Asia/Jakarta")
+  timezone           String   @default("America/Sao_Paulo")
   enableRegistration Boolean  @default(false)
   
   updatedAt          DateTime @updatedAt

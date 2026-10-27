@@ -139,7 +139,7 @@ async function sendWebhookRequest(url: string, payload: WebhookPayload, secret?:
 
     const headers: Record<string, string> = {
         "Content-Type": "application/json",
-        "User-Agent": "WA-AKG-Webhook/1.0"
+        "User-Agent": "Attomus-Zap-Webhook/1.0"
     };
 
     // Add HMAC signature if secret is provided
@@ -285,7 +285,7 @@ export async function testWebhook(webhookId: string, url: string, secret?: strin
         sessionId: "test",
         timestamp: new Date().toISOString(),
         data: {
-            message: "This is a test webhook from WA-AKG",
+            message: "This is a test webhook from Attomus Zap",
             timestamp: new Date().toISOString()
         }
     };
@@ -293,7 +293,7 @@ export async function testWebhook(webhookId: string, url: string, secret?: strin
     const body = JSON.stringify(testPayload, jsonReplacer);
     const headers: Record<string, string> = {
         "Content-Type": "application/json",
-        "User-Agent": "WA-AKG-Webhook/1.0"
+        "User-Agent": "Attomus-Zap-Webhook/1.0"
     };
 
     if (secret) {
@@ -647,7 +647,7 @@ export async function onMessageSent(sessionId: string, message: any, existingFil
         },
 
         // Simplified Fields — always @s.whatsapp.net format
-        from: getOwnJid(sessionId), // Sender — WA-AKG's own number (#M), consistent: "from" = who sent it
+        from: getOwnJid(sessionId), // Sender — Attomus Zap's own number (#M), consistent: "from" = who sent it
         receiver: normalizedFrom,   // Who the message was sent TO — other party (#O) in DM, group JID in group chat
         sender: sender,             // "ME" or normalized JID
         isGroup: isGroup,           // Boolean

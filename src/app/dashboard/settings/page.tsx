@@ -17,13 +17,13 @@ export default function SettingsPage() {
     const isSuperAdmin = (authSession?.user as any)?.role === "SUPERADMIN";
 
     const [systemConfig, setSystemConfig] = useState({
-        appName: "WA-AKG",
+        appName: "Attomus Zap",
         logoUrl: "",
-        timezone: "Asia/Jakarta",
-        enableRegistration: true
+        timezone: "America/Sao_Paulo",
+        enableRegistration: false
     });
     const [systemLoading, setSystemLoading] = useState(false);
-    const [timezones, setTimezones] = useState<string[]>(["UTC", "Asia/Jakarta", "Asia/Makassar", "Asia/Jayapura"]);
+    const [timezones, setTimezones] = useState<string[]>(["UTC", "America/Sao_Paulo", "America/Manaus", "America/Cuiaba", "America/Rio_Branco", "America/Noronha"]);
 
     useEffect(() => {
         try {
@@ -47,12 +47,12 @@ export default function SettingsPage() {
                 const data = responseData?.data;
                 if (data && !responseData.error) {
                     setSystemConfig({
-                        appName: data.appName || "WA-AKG",
+                        appName: data.appName || "Attomus Zap",
                         logoUrl: data.logoUrl || "",
                         // @ts-ignore
                         faviconUrl: data.faviconUrl || "/favicon.ico",
-                        timezone: data.timezone || "Asia/Jakarta",
-                        enableRegistration: data.enableRegistration !== undefined ? data.enableRegistration : true
+                        timezone: data.timezone || "America/Sao_Paulo",
+                        enableRegistration: data.enableRegistration !== undefined ? data.enableRegistration : false
                     });
                 }
             })
@@ -118,7 +118,7 @@ export default function SettingsPage() {
                             <Label>{t("appName")}</Label>
                             <input
                                 className={inputClass}
-                                placeholder="WA-AKG"
+                                placeholder="Attomus Zap"
                                 value={systemConfig.appName}
                                 onChange={(e) => setSystemConfig(prev => ({ ...prev, appName: e.target.value }))}
                                 disabled={!isSuperAdmin}
