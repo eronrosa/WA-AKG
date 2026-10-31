@@ -1,0 +1,105 @@
+/*
+ * Zuuping landing page theme (ported from the z-api-layout Lovable project).
+ * Everything is scoped to .zuuping-landing so the dashboard keeps its own theme.
+ */
+
+.zuuping-landing {
+  --radius: 1rem;
+  --background: oklch(0.15219 0.01044 159.244);
+  --foreground: oklch(0.97406 0.00338 145.549);
+  --card: oklch(0.20655 0.01778 155.365);
+  --card-foreground: oklch(0.97 0.005 150);
+  --popover: oklch(0.2 0.01 150);
+  --popover-foreground: oklch(0.97 0.005 150);
+  --primary: oklch(0.84926 0.20366 135.709);
+  --primary-foreground: oklch(0.18 0.03 140);
+  --secondary: oklch(0.18562 0.01579 157.056);
+  --secondary-foreground: oklch(0.97 0.005 150);
+  --muted: oklch(0.24 0.012 150);
+  --muted-foreground: oklch(0.73012 0.01681 154.349);
+  --accent: oklch(0.28 0.04 140);
+  --accent-foreground: oklch(0.84 0.19 135);
+  --destructive: oklch(0.65 0.22 25);
+  --destructive-foreground: oklch(0.98 0 0);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 12%);
+  --ring: oklch(0.84 0.19 135);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --glow: radial-gradient(ellipse at center, color-mix(in oklab, var(--primary) 5%, transparent), transparent 65%);
+  --hero-background: radial-gradient(ellipse at 50% 85%, color-mix(in oklab, var(--primary) 7%, transparent), transparent 65%);
+  --plane-background: linear-gradient(165deg, transparent 45%, color-mix(in oklab, var(--primary) 5%, transparent));
+  --connection-background: linear-gradient(90deg, color-mix(in oklab, var(--primary) 20%, transparent), color-mix(in oklab, var(--primary) 65%, transparent));
+
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: 0;
+  color-scheme: dark;
+}
+
+.zuuping-landing * { border-color: var(--border); }
+.zuuping-landing .tracking-tight { letter-spacing: 0; }
+
+.zuuping-landing .bg-glow { background-image: var(--glow); }
+.zuuping-landing .shadow-glow { box-shadow: none; }
+.zuuping-landing .animate-marquee { animation: zuuping-marquee 30s linear infinite; }
+@keyframes zuuping-marquee { to { transform: translateX(-50%); } }
+
+.zuuping-landing .site-container { width: 100%; max-width: 1280px; margin-inline: auto; padding-inline: 28px; }
+.zuuping-landing .site-header > div { border-bottom: 1px solid var(--border); }
+.zuuping-landing .premium-hero { background-image: var(--hero-background); }
+.zuuping-landing .hero-title { font-size: 64px; line-height: 1.08; }
+.zuuping-landing .hero-plane { position: absolute; top: 100px; width: 35%; height: 360px; background-image: var(--plane-background); pointer-events: none; }
+.zuuping-landing .hero-plane-left { left: 0; clip-path: polygon(0 0, 100% 100%, 0 75%); }
+.zuuping-landing .hero-plane-right { right: 0; transform: scaleX(-1); clip-path: polygon(0 0, 100% 100%, 0 75%); }
+.zuuping-landing .delivery-diagram { display: grid; grid-template-columns: 330px minmax(100px, 1fr) 250px; align-items: center; max-width: 900px; margin: 28px auto 0; text-align: left; }
+.zuuping-landing .delivery-terminal { border: 1px solid var(--border); border-radius: 16px; background: color-mix(in oklab, var(--card) 50%, transparent); padding: 16px 22px; }
+.zuuping-landing .delivery-connection { display: flex; align-items: center; }
+.zuuping-landing .connection-line { height: 1px; flex: 1; background-image: var(--connection-background); }
+.zuuping-landing .connection-icon { display: flex; align-items: center; justify-content: center; flex-shrink: 0; width: 54px; height: 54px; border: 1px solid var(--border); border-radius: 14px; background: var(--background); position: relative; }
+.zuuping-landing .connection-icon::before,
+.zuuping-landing .connection-icon::after { content: ""; position: absolute; width: 5px; height: 5px; border-radius: 50%; background: var(--primary); top: calc(50% - 2px); animation: zuuping-connection-pulse 3s ease-in-out infinite; }
+.zuuping-landing .connection-icon::before { left: -4px; }
+.zuuping-landing .connection-icon::after { right: -4px; animation-delay: 1.5s; }
+.zuuping-landing .delivery-result { display: flex; align-items: center; gap: 14px; border: 1px solid color-mix(in oklab, var(--primary) 32%, transparent); border-radius: 16px; background: color-mix(in oklab, var(--card) 60%, transparent); padding: 20px; }
+.zuuping-landing .audience-card { display: block; transition: border-color 180ms, background-color 180ms; }
+.zuuping-landing .audience-card:hover { border-color: color-mix(in oklab, var(--primary) 35%, transparent); background: var(--card); }
+.zuuping-landing .audience-card svg { width: 28px; height: 28px; }
+.zuuping-landing > section:not(.premium-hero):not(.audience-section) h2 { font-size: 36px; line-height: 1.2; }
+.zuuping-landing > section:not(.premium-hero) .max-w-6xl,
+.zuuping-landing > section.max-w-6xl { max-width: 1280px; padding-inline: 28px; }
+.zuuping-landing > section .rounded-3xl { border-radius: 16px; }
+@keyframes zuuping-connection-pulse { 0%, 100% { opacity: .45; } 50% { opacity: 1; } }
+
+@media (min-width: 1600px) { .zuuping-landing .hero-title { font-size: 72px; } }
+@media (max-width: 1023px) {
+  .zuuping-landing .hero-title { font-size: 52px; }
+  .zuuping-landing .delivery-diagram { grid-template-columns: 290px minmax(70px, 1fr) 225px; }
+}
+@media (max-width: 639px) {
+  .zuuping-landing .site-container { padding-inline: 20px; }
+  .zuuping-landing .site-header .site-container { gap: 10px; }
+  .zuuping-landing .site-header .site-container > a { font-size: 22px; }
+  .zuuping-landing .site-header .site-container > div { gap: 6px; }
+  .zuuping-landing .site-header .site-container > div > a { padding-inline: 14px; font-size: 12px; }
+  .zuuping-landing .hero-title { font-size: 38px; line-height: 1.12; max-width: 440px; }
+  .zuuping-landing .hero-plane { opacity: .4; }
+  .zuuping-landing .delivery-diagram { display: flex; flex-direction: column; margin-top: 32px; max-width: 340px; }
+  .zuuping-landing .delivery-terminal,
+  .zuuping-landing .delivery-result { width: 100%; }
+  .zuuping-landing .delivery-connection { height: 90px; flex-direction: column; }
+  .zuuping-landing .connection-line { width: 1px; height: auto; min-height: 18px; }
+  .zuuping-landing .connection-icon { width: 46px; height: 46px; }
+  .zuuping-landing .delivery-result { padding: 16px 22px; }
+  .zuuping-landing .audience-card { min-height: 175px; }
+  .zuuping-landing > section:not(.premium-hero):not(.audience-section) h2 { font-size: 30px; }
+  .zuuping-landing > section:not(.premium-hero) .max-w-6xl,
+  .zuuping-landing > section.max-w-6xl { padding-inline: 20px; }
+}
+@media (max-width: 359px) { .zuuping-landing .hero-title { font-size: 36px; } }
+@media (prefers-reduced-motion: reduce) {
+  .zuuping-landing .animate-marquee,
+  .zuuping-landing .connection-icon::before,
+  .zuuping-landing .connection-icon::after { animation: none; }
+}

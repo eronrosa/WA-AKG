@@ -273,8 +273,8 @@ export class ChatService {
             try {
                 const { buffer } = await safeFetchBuffer(url, { maxBytes: 10 * 1024 * 1024 });
                 const sticker = new Sticker(buffer, {
-                    pack: msgPayload.sticker.pack || "Attomus Zap Bot",
-                    author: msgPayload.sticker.author || "Attomus Zap",
+                    pack: msgPayload.sticker.pack || "Zuuping Bot",
+                    author: msgPayload.sticker.author || "Zuuping",
                     type: "full",
                     quality: 50
                 });
@@ -407,8 +407,8 @@ export class ChatService {
             content = { document: buffer, mimetype, fileName, ...messageOptions };
         } else if (type === 'sticker') {
             const sticker = new Sticker(buffer, {
-                pack: "Attomus Zap Bot",
-                author: "Attomus Zap",
+                pack: "Zuuping Bot",
+                author: "Zuuping",
                 type: "full",
                 quality: 50
             });

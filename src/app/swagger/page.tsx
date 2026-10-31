@@ -76,7 +76,7 @@ export default function ApiDocsPage() {
                         <div>
                             <h1 className="text-xl font-bold flex items-center gap-2">
                                 <BookOpen className="w-5 h-5 text-blue-200" />
-                                Attomus Zap API Documentation
+                                Zuuping API Documentation
                             </h1>
                             <p className="text-blue-100 text-xs mt-0.5">
                                 Interactive API specifications & testing playground
