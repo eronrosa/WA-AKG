@@ -2,17 +2,17 @@ import Link from "next/link";
 import { ArrowLeft, Lock, Shield } from "lucide-react";
 
 export const metadata = {
-    title: "Privacy Policy | Attomus Zap",
-    description: "Privacy Policy for Attomus Zap self-hosted WhatsApp Gateway. Zero-tracking architecture, data ownership, and security practices.",
+    title: "Privacy Policy | Zuuping",
+    description: "Privacy Policy for Zuuping self-hosted WhatsApp Gateway. Zero-tracking architecture, data ownership, and security practices.",
     openGraph: {
-        title: "Privacy Policy | Attomus Zap",
-        description: "Privacy Policy for Attomus Zap self-hosted WhatsApp Gateway.",
+        title: "Privacy Policy | Zuuping",
+        description: "Privacy Policy for Zuuping self-hosted WhatsApp Gateway.",
         type: "website",
     },
     twitter: {
         card: "summary_large_image",
-        title: "Privacy Policy | Attomus Zap",
-        description: "Privacy Policy for Attomus Zap self-hosted WhatsApp Gateway.",
+        title: "Privacy Policy | Zuuping",
+        description: "Privacy Policy for Zuuping self-hosted WhatsApp Gateway.",
     },
 };
 
@@ -44,7 +44,7 @@ export default function PrivacyPage() {
                     <div className="prose prose-slate dark:prose-invert max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-a:text-primary hover:prose-a:text-primary/80 prose-p:leading-relaxed">
 
                         <p className="lead text-lg text-muted-foreground mb-8">
-                            At Attomus Zap, we believe that your data is your property. This Privacy Policy details the strict boundaries regarding how information is handled when using our open-source, self-hosted WhatsApp Gateway.
+                            At Zuuping, we believe that your data is your property. This Privacy Policy details the strict boundaries regarding how information is handled when using our open-source, self-hosted WhatsApp Gateway.
                         </p>
 
                         <h2 className="flex items-center gap-2 mt-8 text-2xl border-b pb-2">
@@ -52,10 +52,10 @@ export default function PrivacyPage() {
                             1. Zero-Tracking Architecture
                         </h2>
                         <p>
-                            Because Attomus Zap is designed to be <strong>self-hosted</strong>, all core data processing occurs exclusively on the hardware where you deploy the application.
+                            Because Zuuping is designed to be <strong>self-hosted</strong>, all core data processing occurs exclusively on the hardware where you deploy the application.
                         </p>
                         <ul>
-                            <li><strong>No Centralized Telemetry:</strong> The creators of Attomus Zap do not receive telemetry, analytics, or usage reports about your WhatsApp interactions.</li>
+                            <li><strong>No Centralized Telemetry:</strong> The creators of Zuuping do not receive telemetry, analytics, or usage reports about your WhatsApp interactions.</li>
                             <li><strong>Absolute Data Ownership:</strong> Your contacts, messages, schedules, and auto-replies remain in your own database. We cannot and will not access it.</li>
                         </ul>
 
@@ -65,13 +65,13 @@ export default function PrivacyPage() {
                         </p>
                         <ul>
                             <li><strong>Authentication Credentials:</strong> Passwords you create for the dashboard are securely hashed using bcrypt before being stored in your local database.</li>
-                            <li><strong>WhatsApp Sessions:</strong> Attomus Zap acts as a bridge to WhatsApp Web. The session tokens (keys) necessary to maintain this connection are stored locally on your server.</li>
+                            <li><strong>WhatsApp Sessions:</strong> Zuuping acts as a bridge to WhatsApp Web. The session tokens (keys) necessary to maintain this connection are stored locally on your server.</li>
                             <li><strong>Communication Logs:</strong> Messages sent and received via the gateway are logged within your local database to provide you with historical data and webhook functionality.</li>
                         </ul>
 
                         <h2 className="mt-8 text-2xl border-b pb-2">3. Protecting Your Information</h2>
                         <p>
-                            While Attomus Zap is built with modern security practices, the ultimate safety of your data depends on your hosting environment. We strongly recommend:
+                            While Zuuping is built with modern security practices, the ultimate safety of your data depends on your hosting environment. We strongly recommend:
                         </p>
                         <ul>
                             <li>Deploying the application behind a reverse proxy with enforced <strong>SSL/TLS encryption</strong> (HTTPS).</li>
@@ -81,7 +81,7 @@ export default function PrivacyPage() {
 
                         <h2 className="mt-8 text-2xl border-b pb-2">4. Third-Party Integrations</h2>
                         <p>
-                            Attomus Zap utilizes the <code>@whiskeysockets/baileys</code> library to communicate directly with WhatsApp's servers. By using this gateway, your server will establish a direct web-socket connection to WhatsApp. Please be aware that your use of WhatsApp is still subject to Meta's Privacy Policy.
+                            Zuuping utilizes the <code>@whiskeysockets/baileys</code> library to communicate directly with WhatsApp's servers. By using this gateway, your server will establish a direct web-socket connection to WhatsApp. Please be aware that your use of WhatsApp is still subject to Meta's Privacy Policy.
                         </p>
 
                         <div className="mt-12 p-6 bg-blue-500/5 rounded-2xl border border-blue-500/10">

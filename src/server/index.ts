@@ -110,7 +110,7 @@ app.prepare().then(async () => {
 
     if (isTelemetryEnabled) {
       const MONITOR_URL = "https://api-wa-akg.aikeigroup.net/api/ping";
-      const APP_NAME = process.env.APP_NAME || "Attomus Zap";
+      const APP_NAME = process.env.APP_NAME || "Zuuping";
       const APP_VERSION = `v${pkg.version}`;
 
       const sendHeartbeat = async () => {

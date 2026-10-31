@@ -7,7 +7,7 @@ export const getApiDocs = () => {
         definition: {
             openapi: "3.0.0",
             info: {
-                title: "Attomus Zap API Documentation",
+                title: "Zuuping API Documentation",
                 version: "1.7.0",
                 description: `
 # WhatsApp AI Gateway - Complete API Reference
@@ -1001,7 +1001,7 @@ All endpoints require authentication via:
                                                     sticker: {
                                                         url: "https://example.com/sticker.webp",
                                                         pack: "My Stickers",
-                                                        author: "Attomus Zap"
+                                                        author: "Zuuping"
                                                     }
                                                 }
                                             }
@@ -1034,7 +1034,7 @@ All endpoints require authentication via:
                                                     id: "3EB01234567890"
                                                 },
                                                 message: {
-                                                    conversation: "Hello from Attomus Zap!"
+                                                    conversation: "Hello from Zuuping!"
                                                 },
                                                 messageTimestamp: "1678901234"
                                             }
@@ -1140,7 +1140,7 @@ All endpoints require authentication via:
                                         properties: {
                                             title: { type: "string", example: "Interactive Message Title" },
                                             body: { type: "string", example: "Hello! Please select one of the options below:" },
-                                            footer: { type: "string", example: "Powered by Attomus Zap" },
+                                            footer: { type: "string", example: "Powered by Zuuping" },
                                             header: {
                                                 type: "object",
                                                 properties: {
@@ -1832,7 +1832,7 @@ All endpoints require authentication via:
                                         required: ["file"],
                                         properties: {
                                             file: { type: "string", format: "binary" },
-                                            pack: { type: "string", description: "Sticker pack name (default: Attomus Zap)" },
+                                            pack: { type: "string", description: "Sticker pack name (default: Zuuping)" },
                                             author: { type: "string", description: "Sticker author name (default: User)" },
                                             type: { type: "string", enum: ["full", "crop", "circle"], description: "Sticker crop type (default: full)" },
                                             quality: { type: "integer", minimum: 1, maximum: 100, description: "Image quality (default: 50)" }
@@ -4262,7 +4262,7 @@ All endpoints require authentication via:
                                             type: "object",
                                             properties: {
                                                 id: { type: "string", example: "default" },
-                                                appName: { type: "string", example: "Attomus Zap" },
+                                                appName: { type: "string", example: "Zuuping" },
                                                 logoUrl: { type: "string", example: "https://example.com/logo.png" },
                                                 timezone: { type: "string", example: "America/Sao_Paulo" }
                                             }

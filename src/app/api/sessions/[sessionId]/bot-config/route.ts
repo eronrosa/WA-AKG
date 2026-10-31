@@ -41,7 +41,7 @@ export async function GET(
             enableSticker: true,
             enablePing: true,
             enableUptime: true,
-            botName: "Attomus Zap Bot",
+            botName: "Zuuping Bot",
             removeBgApiKey: null,
             enableVideoSticker: true,
             maxStickerDuration: 10,
