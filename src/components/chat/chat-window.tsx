@@ -53,10 +53,18 @@ interface ChatWindowProps {
 const PAGE_LIMIT = 50;
 
 // ─── Lazy media (unchanged) ────────
+function MediaUnavailable() {
+    return (
+        <div className="flex h-24 items-center justify-center rounded-xl bg-muted/30 px-3 text-center text-xs text-muted-foreground">
+            Mídia indisponível
+        </div>
+    );
+}
 function LazyMedia({ src, alt }: { src: string; alt: string }) {
     const ref = useRef<HTMLDivElement>(null);
     const [visible, setVisible] = useState(false);
     const [loaded, setLoaded] = useState(false);
+    const [failed, setFailed] = useState(false);
     useEffect(() => {
         const el = ref.current;
         if (!el) return;
@@ -64,9 +72,10 @@ function LazyMedia({ src, alt }: { src: string; alt: string }) {
         obs.observe(el);
         return () => obs.disconnect();
     }, []);
+    if (failed) return <MediaUnavailable />;
     return (
         <div ref={ref} className="mb-1.5 overflow-hidden rounded-xl">
-            {visible ? <img src={src} alt={alt} className={`max-w-full max-h-60 object-cover rounded-xl transition-opacity ${loaded ? 'opacity-100' : 'opacity-0'}`} onLoad={() => setLoaded(true)} loading="lazy" />
+            {visible ? <img src={src} alt={alt} className={`max-w-full max-h-60 object-cover rounded-xl transition-opacity ${loaded ? 'opacity-100' : 'opacity-0'}`} onLoad={() => setLoaded(true)} onError={() => setFailed(true)} loading="lazy" />
                 : <div className="h-40 bg-muted/30 rounded-xl animate-pulse" />}
         </div>
     );
@@ -508,6 +517,7 @@ export function ChatWindow({ sessionId, jid, name, onBack }: ChatWindowProps) {
                                             </div>
                                         )}
                                         {/* IMAGE */}
+                                        {['IMAGE', 'VIDEO', 'AUDIO'].includes(msg.type) && !msg.mediaUrl && <MediaUnavailable />}
                                         {msg.type === 'IMAGE' && msg.mediaUrl && (
                                             <div className="relative group/media">
                                                 <LazyMedia src={msg.mediaUrl} alt="Image" />

@@ -25,13 +25,15 @@ export async function GET(
         // Find message in database
         const message = await prisma.message.findUnique({
             where: { id: messageId },
+            include: { session: { select: { sessionId: true } } },
         });
 
         if (!message) {
             return NextResponse.json({ status: false, message: "Message not found", error: "Message not found" }, { status: 404 });
         }
 
-        if (message.sessionId !== sessionId) {
+        // message.sessionId is the internal row id; the URL uses the WhatsApp session id
+        if (message.session.sessionId !== sessionId) {
             return NextResponse.json({ status: false, message: "Message does not belong to this session", error: "Message does not belong to this session" }, { status: 403 });
         }
 
@@ -46,7 +48,10 @@ export async function GET(
         }
 
         // For local files, read and return
-        const filePath = path.join(process.cwd(), message.mediaUrl);
+        // mediaUrl is stored as "/api/media/<file>", while the files live in data/media.
+        // basename() keeps the lookup inside that folder.
+        const mediaDir = path.join(process.cwd(), "data", "media");
+        const filePath = path.join(mediaDir, path.basename(message.mediaUrl));
         
         if (!fs.existsSync(filePath)) {
             return NextResponse.json({ status: false, message: "Media file not found on disk", error: "Media file not found on disk" }, { status: 404 });

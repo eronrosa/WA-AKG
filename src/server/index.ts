@@ -9,6 +9,7 @@ import { Server } from "socket.io";
 import { setupSocket } from "./socket";
 import { waManager } from "../modules/whatsapp/manager";
 import { logger } from "../lib/logger";
+import { prisma } from "../lib/prisma";
 import { runAutoMigration } from "../lib/auto-migrate";
 import pkg from "../../package.json";
 
@@ -46,7 +47,25 @@ const app = next({
 });
 const handle = app.getRequestHandler();
 
+// Wait until MySQL accepts connections. Starting before it is ready left the app
+// returning errors until the database came up, so retry quietly instead.
+async function waitForDatabase() {
+  for (let attempt = 1; ; attempt++) {
+    try {
+      await prisma.$queryRaw`SELECT 1`;
+      if (attempt > 1) logger.info("Database", "Conexão com o banco restabelecida.");
+      return;
+    } catch {
+      if (attempt === 1 || attempt % 10 === 0) {
+        logger.warn("Database", `Banco de dados indisponível, tentando de novo (tentativa ${attempt})...`);
+      }
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+    }
+  }
+}
+
 app.prepare().then(async () => {
+  await waitForDatabase();
   // Run runtime database migrations directly on application start
   await runAutoMigration();
 
