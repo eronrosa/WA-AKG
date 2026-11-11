@@ -63,25 +63,32 @@ app.prepare().then(async () => {
   });
 
   const allowedOrigin = process.env.BASE_URL || `http://${hostname}:${port}`;
+  const isListedOrigin = (origin: string) =>
+    origin === allowedOrigin ||
+    origin.startsWith("http://localhost:") ||
+    origin.startsWith("http://127.0.0.1:") ||
+    origin === process.env.NEXTAUTH_URL;
+  // Accept the page's own origin when it is served through a tunnel or proxy.
+  // Only the Host header is compared: browsers set it, so a page on another site cannot fake it.
+  const isSameHostOrigin = (origin: string, host: string | undefined) => {
+    try {
+      return !!host && new URL(origin).host === host;
+    } catch {
+      return false;
+    }
+  };
   const io = new Server(server, {
     path: "/api/socket/io",
     addTrailingSlash: false,
     cors: {
-      origin: (origin, callback) => {
-        if (
-          !origin ||
-          origin === allowedOrigin ||
-          origin.startsWith("http://localhost:") ||
-          origin.startsWith("http://127.0.0.1:") ||
-          origin === process.env.NEXTAUTH_URL
-        ) {
-          callback(null, true);
-        } else {
-          callback(new Error("CORS origin denied"));
-        }
-      },
+      origin: (origin, callback) => callback(null, !origin || isListedOrigin(origin)),
       credentials: true,
       methods: ["GET", "POST"]
+    },
+    allowRequest: (req, callback) => {
+      const origin = req.headers.origin;
+      const allowed = !origin || isListedOrigin(origin) || isSameHostOrigin(origin, req.headers.host);
+      callback(null, allowed);
     }
   });
 

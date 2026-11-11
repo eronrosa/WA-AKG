@@ -10,9 +10,9 @@ const nextConfig: NextConfig = {
     "bcryptjs",
     "@whiskeysockets/baileys",
     "whatsapp-rust-bridge",
-    "jimp",
     "pino",
     "qrcode-terminal",
+    "systeminformation",
   ],
   turbopack: {
     root: path.resolve(__dirname),

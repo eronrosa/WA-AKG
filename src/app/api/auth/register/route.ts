@@ -6,7 +6,7 @@ import { z } from "zod";
 const registerSchema = z.object({
     name: z.string().min(2),
     email: z.string().email(),
-    password: z.string().min(6),
+    password: z.string().min(8, "A senha precisa ter pelo menos 8 caracteres"),
 });
 
 export async function POST(req: Request) {

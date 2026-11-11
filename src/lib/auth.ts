@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
 import { authConfig } from "@/auth.config";
+import { clearLoginFailures, loginLockSeconds, recordLoginFailure } from "@/lib/login-limit";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   ...authConfig,
@@ -20,15 +21,23 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
         if (parsedCredentials.success) {
           const { email, password } = parsedCredentials.data;
-          
+
+          // Too many wrong passwords for this account: refuse before checking the password
+          if (loginLockSeconds(email) > 0) return null;
+
           const user = await prisma.user.findUnique({ where: { email } });
-          if (!user) return null;
+          if (!user) {
+            recordLoginFailure(email);
+            return null;
+          }
 
           const passwordsMatch = await bcrypt.compare(password, user.password);
 
           if (passwordsMatch) {
-             return user;
+            clearLoginFailures(email);
+            return user;
           }
+          recordLoginFailure(email);
         }
         return null;
       },

@@ -30,6 +30,9 @@ export async function PATCH(
         if (email) updateData.email = email;
         if (role) updateData.role = role;
         if (password) {
+            if (typeof password !== "string" || password.length < 8) {
+                return NextResponse.json({ status: false, message: "A senha precisa ter pelo menos 8 caracteres", error: "A senha precisa ter pelo menos 8 caracteres" }, { status: 400 });
+            }
             updateData.password = await bcrypt.hash(password, 10);
         }
 
