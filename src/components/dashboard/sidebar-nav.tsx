@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { ChevronDown, PanelLeftClose, PanelLeft } from "lucide-react";
+import { Plug, ChevronDown, PanelLeftClose, PanelLeft } from "lucide-react";
 import {
     LayoutDashboard,
     MessageSquare,
@@ -92,6 +92,7 @@ export const navGroups: NavGroup[] = [
     {
         key: "developer",
         items: [
+            { href: "/dashboard/integration", key: "integration", icon: Plug },
             { href: "/docs", key: "apiDocs", icon: FileText },
             { href: "/swagger", key: "swagger", icon: Code, external: true },
         ],

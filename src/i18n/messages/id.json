@@ -82,7 +82,8 @@
       "users": "Pengguna",
       "settings": "Pengaturan",
       "systemMonitor": "Monitor Sistem",
-      "notifications": "Notifikasi"
+      "notifications": "Notifikasi",
+      "integration": "Integrasi API"
     }
   },
   "notifications": {

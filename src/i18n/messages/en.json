@@ -82,7 +82,8 @@
       "users": "Users",
       "settings": "Settings",
       "systemMonitor": "System Monitor",
-      "notifications": "Notifications"
+      "notifications": "Notifications",
+      "integration": "Integration API"
     }
   },
   "notifications": {
