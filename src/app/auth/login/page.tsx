@@ -129,6 +129,12 @@ function LoginForm() {
                 )}
               />
 
+              <div className="text-right -mt-2">
+                <Link href="/auth/forgot" className="text-sm font-medium text-primary hover:text-primary/80 transition-colors">
+                  {t('login.forgotPassword')}
+                </Link>
+              </div>
+
               <Button
                 type="submit"
                 size="lg"

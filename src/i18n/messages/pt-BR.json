@@ -151,7 +151,8 @@
       "submitting": "Autenticando...",
       "submit": "Entrar",
       "noAccount": "Não tem uma conta?",
-      "createAccount": "Criar uma conta"
+      "createAccount": "Criar uma conta",
+      "forgotPassword": "Esqueceu a senha?"
     },
     "register": {
       "title": "Criar Conta",
@@ -170,6 +171,29 @@
       "terms": "Ao se cadastrar, você concorda com nossos <terms>Termos de Serviço</terms> e <privacy>Política de Privacidade</privacy>.",
       "haveAccount": "Já tem uma conta?",
       "signIn": "Entrar"
+    },
+    "forgot": {
+      "title": "Redefinir sua senha",
+      "subtitle": "Informe o e-mail da sua conta. Se ele estiver cadastrado, um link de redefinição é gerado e registrado nos logs do servidor, porque este sistema não envia e-mails.",
+      "submit": "Gerar link de redefinição",
+      "submitting": "Gerando...",
+      "sent": "Se o e-mail estiver cadastrado, um link de redefinição foi gerado. Peça ao administrador para consultar os logs do servidor (válido por 30 minutos).",
+      "back": "Voltar ao login",
+      "tooMany": "Muitas tentativas. Aguarde um minuto e tente de novo."
+    },
+    "reset": {
+      "title": "Escolha uma nova senha",
+      "subtitle": "Digite e confirme sua nova senha.",
+      "newPassword": "Nova senha",
+      "confirmPassword": "Confirmar senha",
+      "submit": "Salvar nova senha",
+      "submitting": "Salvando...",
+      "success": "Senha atualizada. Você já pode entrar.",
+      "mismatch": "As senhas não coincidem",
+      "invalidToken": "Este link é inválido ou expirou. Solicite um novo.",
+      "missingToken": "O link de redefinição está incompleto.",
+      "goToLogin": "Ir para o login",
+      "minLength": "Use pelo menos 8 caracteres"
     }
   },
   "dashboard": {

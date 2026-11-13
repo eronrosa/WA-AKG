@@ -8,7 +8,7 @@ export async function proxy(request: NextRequest) {
     const { pathname } = request.nextUrl;
 
     // Public routes that don't require authentication
-    const publicRoutes = ["/auth/login", "/auth/register", "/api/auth", "/terms", "/privacy"];
+    const publicRoutes = ["/auth/login", "/auth/register", "/auth/forgot", "/auth/reset", "/api/auth", "/terms", "/privacy"];
 
     // Check if it's a public route
     const isPublicRoute = publicRoutes.some(route => pathname.startsWith(route));

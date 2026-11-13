@@ -1,5 +1,8 @@
 ## [Unreleased]
 
+### Added
+- "Forgot password?" flow: login page link, `/auth/forgot` (request a reset link) and `/auth/reset` (choose a new password). Links are single-use, expire after 30 minutes and are written to the server log, since the app does not send e-mail. Retrieve them with `docker compose logs app | grep "Password reset"`.
+
 ### Security
 - Login and registration attempts are now rate limited per IP (`ENABLE_RATE_LIMITING`, `RATE_LIMIT_PER_MINUTE`, default 10/minute). Excess attempts receive HTTP 429.
 - Telemetry heartbeat is now opt-in (`ENABLE_TELEMETRY="true"`). It is no longer sent by default.
