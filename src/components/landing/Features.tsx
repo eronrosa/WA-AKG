@@ -53,7 +53,7 @@ export function Features({ className, ...props }: FeaturesProps) {
     >
       <div className="mx-auto max-w-6xl px-4 py-20">
         <div className="mx-auto max-w-3xl text-center">
-          <h2 id="features-title" className="text-3xl font-bold md:text-5xl">WA-AKG: desenvolvido para escalar</h2>
+          <h2 id="features-title" className="text-3xl font-bold md:text-5xl">Zuuping: desenvolvido para escalar</h2>
           <p className="mt-4 text-muted-foreground">Recursos pensados para sua operação, reunidos em uma interface intuitiva e de alto desempenho.</p>
         </div>
         <div className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">

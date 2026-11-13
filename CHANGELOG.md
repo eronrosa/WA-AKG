@@ -13,7 +13,7 @@
 ### Fixed
 - `SESSION_TIMEOUT_HOURS` now sets the session lifetime (default 24h).
 - `MAX_UPLOAD_SIZE_MB` is now enforced on media, sticker and profile/group picture uploads (HTTP 413 when exceeded).
-- Hard-coded "Zuuping" branding replaced with "WA-AKG" defaults. The name is still configurable with `APP_NAME` and in the dashboard.
+- Hard-coded "Zuuping" branding replaced with "Zuuping" defaults. The name is still configurable with `APP_NAME` and in the dashboard.
 - Removed committed temporary and lint output files from the repository root.
 
 ## [v1.7.0] - 2026-10-19

@@ -1,5 +1,5 @@
 /**
- * Central links for the WA-AKG landing page — every button points here.
+ * Central links for the Zuuping landing page — every button points here.
  * To change where a button goes, edit ONLY this file.
  */
 export const LINKS = {

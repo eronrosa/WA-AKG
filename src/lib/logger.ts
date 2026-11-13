@@ -1,5 +1,5 @@
 /**
- * WA-AKG Logger — Beautiful colored console output
+ * Zuuping Logger — Beautiful colored console output
  * 
  * Usage:
  *   import { logger } from "@/lib/logger";

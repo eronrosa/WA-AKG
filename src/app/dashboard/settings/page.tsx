@@ -17,7 +17,7 @@ export default function SettingsPage() {
     const isSuperAdmin = (authSession?.user as any)?.role === "SUPERADMIN";
 
     const [systemConfig, setSystemConfig] = useState({
-        appName: "WA-AKG",
+        appName: "Zuuping",
         logoUrl: "",
         timezone: "America/Sao_Paulo",
         enableRegistration: false
@@ -47,7 +47,7 @@ export default function SettingsPage() {
                 const data = responseData?.data;
                 if (data && !responseData.error) {
                     setSystemConfig({
-                        appName: data.appName || "WA-AKG",
+                        appName: data.appName || "Zuuping",
                         logoUrl: data.logoUrl || "",
                         // @ts-ignore
                         faviconUrl: data.faviconUrl || "/favicon.ico",
@@ -118,7 +118,7 @@ export default function SettingsPage() {
                             <Label>{t("appName")}</Label>
                             <input
                                 className={inputClass}
-                                placeholder="WA-AKG"
+                                placeholder="Zuuping"
                                 value={systemConfig.appName}
                                 onChange={(e) => setSystemConfig(prev => ({ ...prev, appName: e.target.value }))}
                                 disabled={!isSuperAdmin}
