@@ -901,7 +901,7 @@
     "integration": {
       "title": "Integration hub",
       "description": "Everything another platform asks for to connect to Zuuping, in one place.",
-      "step1": "1. Copy these values into the other platform",
+      "step1": "Manual setup: 1. Copy these values into the other platform",
       "apiUrl": "API URL",
       "apiUrlHint": "Base address for API calls.",
       "sessionId": "Session ID",
@@ -923,7 +923,12 @@
       "registerFailed": "Could not register the webhook",
       "invalidUrl": "Enter a URL that starts with https://",
       "noSession": "No session selected",
-      "defaultName": "Integration"
+      "defaultName": "Integration",
+      "quickTitle": "Quick connect (recommended)",
+      "quickDesc": "Copy the connection code and paste it into the other platform. It sets everything up by itself: session, key, secret and webhook.",
+      "copyCode": "Copy connection code",
+      "needKey": "Generate an API key below to unlock the connection code.",
+      "quickWarning": "The code contains your API key. Treat it like a password."
     }
   },
   "sticker": {

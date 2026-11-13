@@ -901,7 +901,7 @@
     "integration": {
       "title": "Central de integração",
       "description": "Todos os dados que outra plataforma pede para se conectar à Zuuping, em um só lugar.",
-      "step1": "1. Copie estes dados para a outra plataforma",
+      "step1": "Configuração manual: 1. Copie estes dados para a outra plataforma",
       "apiUrl": "URL da API",
       "apiUrlHint": "Endereço base das chamadas à API.",
       "sessionId": "ID da sessão",
@@ -923,7 +923,12 @@
       "registerFailed": "Não foi possível cadastrar o webhook",
       "invalidUrl": "Informe uma URL que comece com https://",
       "noSession": "Nenhuma sessão selecionada",
-      "defaultName": "Integração"
+      "defaultName": "Integração",
+      "quickTitle": "Conexão rápida (recomendado)",
+      "quickDesc": "Copie o código de conexão e cole na outra plataforma. Ela configura tudo sozinha: sessão, chave, segredo e webhook.",
+      "copyCode": "Copiar código de conexão",
+      "needKey": "Gere uma chave de API abaixo para liberar o código de conexão.",
+      "quickWarning": "O código contém a sua chave de API. Trate-o como uma senha."
     }
   },
   "sticker": {

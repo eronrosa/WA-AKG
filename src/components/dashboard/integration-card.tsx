@@ -34,6 +34,16 @@ export function IntegrationCard({ sessionId, sessionName, apiKey, onGenerateKey,
         setApiUrl(`${window.location.origin}/api`);
     }, []);
 
+    // Everything the other platform needs, packed in one string it can decode:
+    // "zuuping:" + base64url(JSON { v, u: API URL, s: session ID, k: API key }).
+    const connectionCode = (() => {
+        if (!apiUrl || !sessionId || !apiKey) return "";
+        const bytes = new TextEncoder().encode(JSON.stringify({ v: 1, u: apiUrl, s: sessionId, k: apiKey }));
+        let binary = "";
+        bytes.forEach((b) => { binary += String.fromCharCode(b); });
+        return "zuuping:" + btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+    })();
+
     const copy = (text: string) => {
         if (!text) return;
         navigator.clipboard.writeText(text);
@@ -108,7 +118,20 @@ export function IntegrationCard({ sessionId, sessionName, apiKey, onGenerateKey,
                 <CardDescription>{t("description")}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-                <div className="space-y-4">
+                <div className="space-y-3 rounded-lg border border-primary/40 bg-primary/5 p-4">
+                    <h3 className="text-sm font-semibold">{t("quickTitle")}</h3>
+                    <p className="text-xs text-muted-foreground">{t("quickDesc")}</p>
+                    {connectionCode ? (
+                        <Button onClick={() => copy(connectionCode)}>
+                            <Copy className="h-4 w-4 mr-2" /> {t("copyCode")}
+                        </Button>
+                    ) : (
+                        <p className="text-xs font-medium text-destructive">{!sessionId ? t("noSession") : t("needKey")}</p>
+                    )}
+                    <p className="text-xs text-muted-foreground">{t("quickWarning")}</p>
+                </div>
+
+                <div className="space-y-4 border-t pt-5">
                     <h3 className="text-sm font-semibold">{t("step1")}</h3>
                     <Row label={t("apiUrl")} value={apiUrl} hint={t("apiUrlHint")} />
                     <Row label={t("sessionId")} value={sessionId} hint={sessionName ? t("sessionIdHint", { name: sessionName }) : t("noSession")} />
