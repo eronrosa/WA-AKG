@@ -160,6 +160,26 @@ export class WhatsAppInstance {
                     return;
                 }
 
+                if (code === DisconnectReason.connectionReplaced) {
+                    // Another client opened this WhatsApp session (e.g. a second instance or
+                    // a device still running the app). Reconnecting would make both sides
+                    // kick each other out in a loop, so stop here and keep the credentials.
+                    this.status = "STOPPED";
+                    this.socket = null;
+                    this.reconnectCount = 0;
+                    this.isStopped = true;
+                    this.io?.to(this.sessionId).emit("connection.update", { status: "STOPPED", qr: null });
+
+                    await prisma.session.update({
+                        where: { sessionId: this.sessionId },
+                        data: { status: "STOPPED", qr: null }
+                    }).catch(() => {});
+                    logger.error("Instance",
+                        `Session ${this.sessionId} was replaced by another connection (440). Stopped to avoid a reconnect loop. Stop the other instance and start this session again.`
+                    );
+                    return;
+                }
+
                 if (this.isStopped) {
                     // Explicitly stopped: preserve creds for restart
                     this.status = "STOPPED";
