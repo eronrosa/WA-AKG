@@ -3,7 +3,6 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 import { getCookie, setCookie } from "@/lib/client-cookie";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 
 interface Session {
     id: string;
@@ -54,7 +53,6 @@ export function SessionProvider({ children }: { children: ReactNode }) {
             }
         } catch (error) {
             console.error(error);
-            toast.error("Failed to fetch sessions");
         } finally {
             setLoading(false);
         }
@@ -62,6 +60,22 @@ export function SessionProvider({ children }: { children: ReactNode }) {
 
     useEffect(() => {
         fetchSessions();
+
+        // The list used to load only once. A session created or deleted afterwards, or a
+        // load that failed while the server was restarting, left every page saying
+        // "no session selected" until a manual reload. Keep it fresh instead.
+        const interval = setInterval(fetchSessions, 30000);
+        const onVisible = () => {
+            if (document.visibilityState === "visible") fetchSessions();
+        };
+        document.addEventListener("visibilitychange", onVisible);
+        window.addEventListener("focus", fetchSessions);
+
+        return () => {
+            clearInterval(interval);
+            document.removeEventListener("visibilitychange", onVisible);
+            window.removeEventListener("focus", fetchSessions);
+        };
     }, []);
 
     const setSessionId = (id: string) => {
