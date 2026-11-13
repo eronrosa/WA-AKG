@@ -585,6 +585,15 @@ export async function onMessageReceived(sessionId: string, message: any, existin
     const normalized = extractMessageContent(message);
     const quoted = await extractQuotedMessageAsync(message, sessionId);
 
+    // Profile picture of the group (group messages) or of the sender (direct messages).
+    // Cached and time-limited, and null when there is no picture, so it never blocks delivery.
+    const { getProfilePictureUrl } = await import("./profile-picture");
+    const pictureJid = isGroup ? remoteJid : (typeof normalizedFrom === "string" && normalizedFrom ? normalizedFrom : remoteJid);
+    let profilePicUrl = await getProfilePictureUrl(sessionId, pictureJid);
+    if (!profilePicUrl && !isGroup && pictureJid !== remoteJid) {
+        profilePicUrl = await getProfilePictureUrl(sessionId, remoteJid);
+    }
+
     dispatchWebhook(sessionId, "message.received", {
         key: {
             id: message.key?.id,
@@ -597,6 +606,7 @@ export async function onMessageReceived(sessionId: string, message: any, existin
 
         // Simplified Fields — always @s.whatsapp.net format
         from: normalizedFrom,       // Sender — who sent it (#O in DM), consistent: "from" = who sent it
+        profilePicUrl: profilePicUrl, // Sender's picture (group's picture in group chats), or null
         receiver: getOwnJid(sessionId), // Zuuping's own number (#M)
         sender: sender,             // Who Sent It (normalized JID or enriched Object)
         isGroup: isGroup,           // Boolean
