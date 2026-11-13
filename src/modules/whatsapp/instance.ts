@@ -44,6 +44,17 @@ export class WhatsAppInstance {
     }
 
     async init() {
+        // Close any socket still alive from a previous init (manual start/restart while
+        // connecting, or a scheduled reconnect). Two live sockets with the same credentials
+        // replace each other with 440 and keep the session in a connect/disconnect loop.
+        if (this.socket) {
+            try {
+                this.socket.ev.removeAllListeners("connection.update");
+                this.socket.end(undefined);
+            } catch { /* already closed */ }
+            this.socket = null;
+        }
+
         const sessionData = await prisma.session.findUnique({
             where: { sessionId: this.sessionId },
             include: { botConfig: true }
