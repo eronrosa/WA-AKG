@@ -75,6 +75,7 @@ graph LR
   "data": {
     "key": { "remoteJid": "6287748687946@s.whatsapp.net", "fromMe": false, "id": "3EB0B78..." },
     "from": "6287748687946@s.whatsapp.net",
+    "profilePicUrl": "https://pps.whatsapp.net/v/t61.24694-24/...",
     "sender": "100429287395370@lid",
     "remoteJidAlt": "100429287395370@lid",
     "type": "TEXT",
@@ -204,6 +205,7 @@ WA-AKG provides a comprehensive REST API to integrate WhatsApp Messaging directl
 | `GET` | `/api/groups/{sessionId}` | List all available groups |
 | `POST` | `/api/webhooks/{sessionId}` | Register real-time event listeners |
 | `POST` | `/api/autoreplies/{sessionId}` | Create context-aware auto-replies |
+| `GET` | `/api/contacts/{jid}/picture` | Profile picture URL of a contact or group |
 | `POST` | `/api/auth/register` | Register new users via the web securely |
 
 ### Example: Send Text Message
@@ -214,6 +216,55 @@ curl -X POST http://localhost:3000/api/messages/session_01/62812345678@s.whatsap
   -d '{
     "message": { "text": "Hello from WA-AKG!" }
   }'
+```
+
+### Profile Pictures
+
+**Route: `GET /api/contacts/{jid}/picture`**
+
+Returns the WhatsApp profile picture URL of a contact (`...@s.whatsapp.net`) or a group (`...@g.us`). It authenticates with the `X-API-Key` header, like every other endpoint.
+
+- The session is chosen with the optional `?sessionId=` query parameter. When omitted, the only connected session of the API key's owner is used. If more than one session is connected, the request returns `400` asking for `sessionId`.
+- `pictureUrl` is `null` when the contact or group has no picture, hides it through privacy settings, or the lookup fails. These cases never return `500`.
+- URLs are WhatsApp CDN links that expire, so store the image or ask again later instead of keeping the URL forever. Results are cached for 10 minutes.
+
+```bash
+curl "http://localhost:3000/api/contacts/5511999999999@s.whatsapp.net/picture?sessionId=session_01" \
+  -H "X-API-Key: your_api_key"
+```
+
+Contact with a picture:
+```json
+{ "status": true, "data": { "jid": "5511999999999@s.whatsapp.net", "pictureUrl": "https://pps.whatsapp.net/v/t61.24694-24/..." } }
+```
+
+Group, or contact, without a visible picture:
+```json
+{ "status": true, "data": { "jid": "120363041234567890@g.us", "pictureUrl": null } }
+```
+
+Errors: `400` invalid JID or ambiguous session, `401` missing or invalid API key, `403` no access to the session, `503` session not connected.
+
+**Webhook field: `data.profilePicUrl`**
+
+Every `message.received` event carries `data.profilePicUrl`: the sender's picture in direct chats, or the group's picture when the message comes from a group. It is `null` when no picture is available. The field is part of the signed body, so `X-Webhook-Signature` validation works as before.
+
+```json
+{
+  "event": "message.received",
+  "sessionId": "session_01",
+  "timestamp": "2026-11-13T22:00:00.000Z",
+  "data": {
+    "key": { "id": "3EB0B78...", "remoteJid": "5511999999999@s.whatsapp.net", "fromMe": false },
+    "pushName": "Maria",
+    "from": "5511999999999@s.whatsapp.net",
+    "profilePicUrl": "https://pps.whatsapp.net/v/t61.24694-24/...",
+    "isGroup": false,
+    "chatType": "PERSONAL",
+    "type": "TEXT",
+    "content": "Olá, tenho interesse no imóvel"
+  }
+}
 ```
 
 ---
