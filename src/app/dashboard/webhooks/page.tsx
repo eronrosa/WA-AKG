@@ -30,6 +30,7 @@ import {
 } from "@/components/ui/dialog";
 
 import { SessionGuard } from "@/components/dashboard/session-guard";
+import { IntegrationCard } from "@/components/dashboard/integration-card";
 import WebhookLogDialog from "@/components/dashboard/webhook-log-dialog";
 
 interface WebhookConfig {
@@ -355,6 +356,15 @@ export default function WebhooksPage() {
             <div>
                 <h1 className="text-xl sm:text-2xl font-bold">{t("title")}</h1>
             </div>
+
+            {/* Integration hub: everything an external platform needs, in one place */}
+            <IntegrationCard
+                sessionId={sessionId}
+                sessionName={sessions.find(s => s.sessionId === sessionId)?.name}
+                apiKey={apiKey}
+                onGenerateKey={generateNewApiKey}
+                onWebhookCreated={fetchWebhooks}
+            />
 
             {/* API Key Section */}
             <Card>

@@ -897,6 +897,33 @@
       "noResponse": "Tidak ada isi respon dari server.",
       "noLogSelected": "Tidak Ada Log Dipilih",
       "noLogSelectedDesc": "Pilih percobaan webhook dari bilah samping untuk memeriksa detail metadata dan payload."
+    },
+    "integration": {
+      "title": "Pusat integrasi",
+      "description": "Semua data yang diminta platform lain untuk terhubung ke Zuuping, di satu tempat.",
+      "step1": "1. Salin data ini ke platform lain",
+      "apiUrl": "URL API",
+      "apiUrlHint": "Alamat dasar untuk panggilan API.",
+      "sessionId": "ID sesi",
+      "sessionIdHint": "Sesi terpilih: {name}. Ganti sesi di bilah atas jika perlu.",
+      "apiKey": "Kunci API",
+      "apiKeyHint": "Dikirim di header X-API-Key. Jangan dibagikan.",
+      "generateKey": "Buat kunci API",
+      "toggleKey": "Tampilkan atau sembunyikan kunci",
+      "copy": "Salin",
+      "generate": "Buat",
+      "step2": "2. Daftarkan webhook platform lain di sini",
+      "step2Desc": "Tempel URL webhook yang diberikan platform lain. Zuuping akan mengirim setiap pesan yang diterima (event message.received).",
+      "webhookUrl": "URL webhook (dari platform lain)",
+      "webhookSecret": "Rahasia webhook (opsional)",
+      "webhookSecretPlaceholder": "Klik Buat atau tempel rahasia dari platform lain",
+      "webhookSecretHint": "Gunakan nilai yang sama di sini dan di platform lain. Nilai ini menandatangani pesan di header X-Webhook-Signature (HMAC SHA-256). Salin sebelum mendaftar: tidak ditampilkan lagi.",
+      "register": "Daftarkan webhook",
+      "registered": "Webhook terdaftar",
+      "registerFailed": "Tidak dapat mendaftarkan webhook",
+      "invalidUrl": "Masukkan URL yang diawali https://",
+      "noSession": "Tidak ada sesi terpilih",
+      "defaultName": "Integrasi"
     }
   },
   "sticker": {

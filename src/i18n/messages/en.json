@@ -897,6 +897,33 @@
       "noResponse": "No response body returned from server.",
       "noLogSelected": "No Log Selected",
       "noLogSelectedDesc": "Select a webhook attempt from the sidebar to inspect detailed metadata and payloads."
+    },
+    "integration": {
+      "title": "Integration hub",
+      "description": "Everything another platform asks for to connect to Zuuping, in one place.",
+      "step1": "1. Copy these values into the other platform",
+      "apiUrl": "API URL",
+      "apiUrlHint": "Base address for API calls.",
+      "sessionId": "Session ID",
+      "sessionIdHint": "Selected session: {name}. Switch sessions in the top bar if needed.",
+      "apiKey": "API key",
+      "apiKeyHint": "Sent in the X-API-Key header. Do not share it.",
+      "generateKey": "Generate API key",
+      "toggleKey": "Show or hide the key",
+      "copy": "Copy",
+      "generate": "Generate",
+      "step2": "2. Register the other platform's webhook here",
+      "step2Desc": "Paste the webhook URL the other platform gives you. Zuuping will send it every received message (message.received event).",
+      "webhookUrl": "Webhook URL (provided by the other platform)",
+      "webhookSecret": "Webhook secret (optional)",
+      "webhookSecretPlaceholder": "Click Generate or paste the other platform's secret",
+      "webhookSecretHint": "Use the same value here and in the other platform. It signs messages in the X-Webhook-Signature header (HMAC SHA-256). Copy it before registering: it is not shown again.",
+      "register": "Register webhook",
+      "registered": "Webhook registered",
+      "registerFailed": "Could not register the webhook",
+      "invalidUrl": "Enter a URL that starts with https://",
+      "noSession": "No session selected",
+      "defaultName": "Integration"
     }
   },
   "sticker": {
