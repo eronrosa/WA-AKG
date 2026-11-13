@@ -423,7 +423,7 @@ export async function buildInteractiveMessage(
 
     // 1. Prepare Header (media or text)
     let headerMedia: any = null;
-    let headerText = typeof header === "string" ? header : (typeof header === "object" ? header?.title : "");
+    const headerText = typeof header === "string" ? header : (typeof header === "object" ? header?.title : "");
 
     const uploadFn = (sock as any).waUploadToServer;
 

@@ -159,7 +159,7 @@ export async function bindAutoReply(sock: WASocket, sessionId: string) {
                                     timeoutMs: 15000
                                 });
 
-                                let payload: any = {};
+                                const payload: any = {};
                                 if (rule.response) {
                                     payload.caption = rule.response;
                                 }

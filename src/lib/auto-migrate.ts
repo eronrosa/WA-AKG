@@ -2,7 +2,7 @@ import { prisma } from "./prisma";
 import { logger } from "./logger";
 
 /**
- * Automatically migrate database schema and enum values at runtime when WA-AKG starts.
+ * Automatically migrate database schema and enum values at runtime when Zuuping starts.
  * Ensures zero-downtime, idempotent schema synchronization across MySQL and PostgreSQL.
  */
 export async function runAutoMigration(): Promise<void> {

@@ -503,7 +503,7 @@ export async function downloadAndSaveMedia(message: WAMessage, sessionId: string
 }
 
 /**
- * Get WA-AKG's own clean phone JID for a session
+ * Get Zuuping's own clean phone JID for a session
  * Strips device suffix (e.g. :47@s.whatsapp.net → @s.whatsapp.net)
  */
 function getOwnJid(sessionId: string): string | null {
@@ -533,7 +533,7 @@ export async function onMessageReceived(sessionId: string, message: any, existin
     const normalizedFrom = await resolveToPhoneJid(remoteJid, sessionId, remoteJidAlt);
 
     // "sender" is who sent it. In DM: remoteJid. In Group: participant.
-    let senderJid: string = isGroup ? (participant || "") : remoteJid;
+    const senderJid: string = isGroup ? (participant || "") : remoteJid;
     const normalizedSender = await resolveToPhoneJid(senderJid, sessionId);
     let sender: any = normalizedSender;
 
@@ -597,7 +597,7 @@ export async function onMessageReceived(sessionId: string, message: any, existin
 
         // Simplified Fields — always @s.whatsapp.net format
         from: normalizedFrom,       // Sender — who sent it (#O in DM), consistent: "from" = who sent it
-        receiver: getOwnJid(sessionId), // WA-AKG's own number (#M)
+        receiver: getOwnJid(sessionId), // Zuuping's own number (#M)
         sender: sender,             // Who Sent It (normalized JID or enriched Object)
         isGroup: isGroup,           // Boolean
         chatType: getChatType(remoteJid), // PERSONAL | GROUP | STATUS | NEWSLETTER

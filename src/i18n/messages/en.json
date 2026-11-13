@@ -151,7 +151,8 @@
       "submitting": "Authenticating...",
       "submit": "Sign In",
       "noAccount": "Don't have an account?",
-      "createAccount": "Create an account"
+      "createAccount": "Create an account",
+      "forgotPassword": "Forgot your password?"
     },
     "register": {
       "title": "Create Account",
@@ -170,6 +171,29 @@
       "terms": "By registering, you agree to our <terms>Terms of Service</terms> and <privacy>Privacy Policy</privacy>.",
       "haveAccount": "Already have an account?",
       "signIn": "Sign in"
+    },
+    "forgot": {
+      "title": "Reset your password",
+      "subtitle": "Enter the email of your account. If it exists, a reset link is generated and recorded in the server logs, because this system does not send emails.",
+      "submit": "Generate reset link",
+      "submitting": "Generating...",
+      "sent": "If the email is registered, a reset link was generated. Ask the administrator to check the server logs for the link (valid for 30 minutes).",
+      "back": "Back to login",
+      "tooMany": "Too many attempts. Wait a minute and try again."
+    },
+    "reset": {
+      "title": "Choose a new password",
+      "subtitle": "Enter and confirm your new password.",
+      "newPassword": "New password",
+      "confirmPassword": "Confirm password",
+      "submit": "Save new password",
+      "submitting": "Saving...",
+      "success": "Password updated. You can now sign in.",
+      "mismatch": "Passwords do not match",
+      "invalidToken": "This link is invalid or has expired. Request a new one.",
+      "missingToken": "The reset link is incomplete.",
+      "goToLogin": "Go to login",
+      "minLength": "Use at least 8 characters"
     }
   },
   "dashboard": {

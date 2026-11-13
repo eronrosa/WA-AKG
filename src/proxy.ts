@@ -1,13 +1,14 @@
 import { auth } from "@/lib/auth";
 import { validateApiKey } from "@/lib/api-auth";
 import { NextResponse } from "next/server";
+import { isRateLimited, getClientIp } from "@/lib/rate-limit";
 import type { NextRequest } from "next/server";
 
 export async function proxy(request: NextRequest) {
     const { pathname } = request.nextUrl;
 
     // Public routes that don't require authentication
-    const publicRoutes = ["/auth/login", "/auth/register", "/api/auth", "/terms", "/privacy"];
+    const publicRoutes = ["/auth/login", "/auth/register", "/auth/forgot", "/auth/reset", "/api/auth", "/terms", "/privacy"];
 
     // Check if it's a public route
     const isPublicRoute = publicRoutes.some(route => pathname.startsWith(route));
@@ -24,6 +25,16 @@ export async function proxy(request: NextRequest) {
     const staticExtensions = [".svg", ".ico", ".png", ".jpg", ".jpeg", ".webp", ".woff", ".woff2", ".ttf"];
     if (pathname.lastIndexOf("/") === 0 && staticExtensions.some(ext => pathname.endsWith(ext))) {
         return NextResponse.next();
+    }
+
+    // Brute-force protection for credential sign-in and registration
+    if (request.method === "POST" && (pathname === "/api/auth/callback/credentials" || pathname === "/api/auth/register")) {
+        const enabled = process.env.ENABLE_RATE_LIMITING !== "false";
+        const parsed = Number(process.env.RATE_LIMIT_PER_MINUTE);
+        const limit = Number.isFinite(parsed) && parsed > 0 ? parsed : 10;
+        if (enabled && isRateLimited(`auth:${getClientIp(request)}`, limit)) {
+            return NextResponse.json({ error: "Too many attempts. Try again in a minute." }, { status: 429 });
+        }
     }
 
     // API routes: Check for valid API key or session

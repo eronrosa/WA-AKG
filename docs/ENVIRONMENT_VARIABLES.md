@@ -1,6 +1,6 @@
 # 🔐 Environment Variables Guide
 
-This document provides a comprehensive reference for all configuration options available in **WA-AKG**. 
+This document provides a comprehensive reference for all configuration options available in **Zuuping**. 
 
 > [!WARNING]
 > Never commit your `.env` file to version control (Git). It contains sensitive credentials that could compromise your system.
@@ -41,7 +41,7 @@ Branding attributes and client interface pagination settings.
 
 | Variable | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
-| `APP_NAME` | string | `WA-AKG` | Custom name displayed across the login screens, dashboard header, and sidebar footer. |
+| `APP_NAME` | string | `Zuuping` | Custom name displayed across the login screens, dashboard header, and sidebar footer. |
 | `LOGO_URL` | string | — | Custom image URL for your brand logo (leave empty to use default asset). |
 | `FAVICON_URL` | string | — | Custom image URL for the browser tab favicon (leave empty to use default asset). |
 | `NEXT_PUBLIC_CHAT_PAGE_SIZE` | number | `50` | Default number of conversations loaded per page in the chat window. |
@@ -92,8 +92,8 @@ Rate limiting parameters and upload size thresholds.
 | :--- | :--- | :--- | :--- |
 | `SESSION_TIMEOUT_HOURS` | number | `24` | Hours after which user authentication sessions expire. |
 | `MAX_UPLOAD_SIZE_MB` | number | `50` | Maximum allowed file upload size (in MB) for media attachments. |
-| `ENABLE_RATE_LIMITING` | boolean | `true` | Protect API endpoints from brute-force/abuse via rate limits. |
-| `RATE_LIMIT_PER_MINUTE` | number | `60` | Max requests allowed per minute per IP address. |
+| `ENABLE_RATE_LIMITING` | boolean | `true` | Limits login and registration attempts per IP to stop brute-force attacks. |
+| `RATE_LIMIT_PER_MINUTE` | number | `10` | Max login/registration attempts per minute per IP address. |
 
 ---
 

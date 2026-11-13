@@ -151,7 +151,8 @@
       "submitting": "Mengautentikasi...",
       "submit": "Masuk",
       "noAccount": "Belum punya akun?",
-      "createAccount": "Buat akun"
+      "createAccount": "Buat akun",
+      "forgotPassword": "Lupa kata sandi?"
     },
     "register": {
       "title": "Buat Akun",
@@ -170,6 +171,29 @@
       "terms": "Dengan mendaftar, Anda menyetujui <terms>Ketentuan Layanan</terms> dan <privacy>Kebijakan Privasi</privacy> kami.",
       "haveAccount": "Sudah punya akun?",
       "signIn": "Masuk"
+    },
+    "forgot": {
+      "title": "Atur ulang kata sandi",
+      "subtitle": "Masukkan email akun Anda. Jika terdaftar, tautan atur ulang dibuat dan dicatat di log server, karena sistem ini tidak mengirim email.",
+      "submit": "Buat tautan atur ulang",
+      "submitting": "Membuat...",
+      "sent": "Jika email terdaftar, tautan atur ulang sudah dibuat. Minta administrator memeriksa log server untuk tautannya (berlaku 30 menit).",
+      "back": "Kembali ke login",
+      "tooMany": "Terlalu banyak percobaan. Tunggu satu menit lalu coba lagi."
+    },
+    "reset": {
+      "title": "Pilih kata sandi baru",
+      "subtitle": "Masukkan dan konfirmasi kata sandi baru Anda.",
+      "newPassword": "Kata sandi baru",
+      "confirmPassword": "Konfirmasi kata sandi",
+      "submit": "Simpan kata sandi baru",
+      "submitting": "Menyimpan...",
+      "success": "Kata sandi diperbarui. Anda sekarang bisa masuk.",
+      "mismatch": "Kata sandi tidak cocok",
+      "invalidToken": "Tautan ini tidak valid atau sudah kedaluwarsa. Minta tautan baru.",
+      "missingToken": "Tautan atur ulang tidak lengkap.",
+      "goToLogin": "Ke halaman login",
+      "minLength": "Gunakan minimal 8 karakter"
     }
   },
   "dashboard": {

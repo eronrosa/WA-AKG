@@ -1,6 +1,7 @@
 import { NextResponse, NextRequest } from "next/server";
 import { getAuthenticatedUser, canAccessSession } from "@/lib/api-auth";
 import { waManager } from "@/modules/whatsapp/manager";
+import { checkUploadSize } from "@/lib/limits";
 
 export async function PUT(
     request: NextRequest,
@@ -20,6 +21,8 @@ export async function PUT(
 
         const formData = await request.formData();
         const image = formData.get("image") as File;
+        const tooLarge = checkUploadSize(image);
+        if (tooLarge) return tooLarge;
 
         if (!image) {
             return NextResponse.json({ status: false, message: "Image is required" }, { status: 400 });

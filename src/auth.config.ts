@@ -34,7 +34,8 @@ export const authConfig = {
     },
     providers: [], // Configured in auth.ts
     session: {
-        strategy: 'jwt'
+        strategy: 'jwt',
+        maxAge: (Number(process.env.SESSION_TIMEOUT_HOURS) > 0 ? Number(process.env.SESSION_TIMEOUT_HOURS) : 24) * 60 * 60,
     },
     trustHost: true,
 } satisfies NextAuthConfig;
