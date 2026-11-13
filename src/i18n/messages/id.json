@@ -901,7 +901,7 @@
     "integration": {
       "title": "Pusat integrasi",
       "description": "Semua data yang diminta platform lain untuk terhubung ke Zuuping, di satu tempat.",
-      "step1": "1. Salin data ini ke platform lain",
+      "step1": "Pengaturan manual: 1. Salin data ini ke platform lain",
       "apiUrl": "URL API",
       "apiUrlHint": "Alamat dasar untuk panggilan API.",
       "sessionId": "ID sesi",
@@ -923,7 +923,12 @@
       "registerFailed": "Tidak dapat mendaftarkan webhook",
       "invalidUrl": "Masukkan URL yang diawali https://",
       "noSession": "Tidak ada sesi terpilih",
-      "defaultName": "Integrasi"
+      "defaultName": "Integrasi",
+      "quickTitle": "Koneksi cepat (disarankan)",
+      "quickDesc": "Salin kode koneksi dan tempel di platform lain. Platform itu mengatur semuanya sendiri: sesi, kunci, rahasia, dan webhook.",
+      "copyCode": "Salin kode koneksi",
+      "needKey": "Buat kunci API di bawah untuk mengaktifkan kode koneksi.",
+      "quickWarning": "Kode ini berisi kunci API Anda. Perlakukan seperti kata sandi."
     }
   },
   "sticker": {
