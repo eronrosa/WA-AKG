@@ -28,6 +28,7 @@ COPY --from=builder --chown=node:node /app/prisma ./prisma
 COPY --from=builder --chown=node:node /app/public ./public
 COPY --from=builder --chown=node:node /app/tsconfig.json ./
 COPY --from=builder --chown=node:node /app/scripts ./scripts
+COPY --from=builder --chown=node:node /app/docs ./docs
 
 # Create data directories with appropriate non-root ownership
 RUN mkdir -p /app/data/media /app/data/auth && chown -R node:node /app/data
