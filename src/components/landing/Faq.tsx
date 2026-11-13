@@ -2,7 +2,7 @@ import { LINKS } from "@/components/landing/links";
 import { Button } from "@/components/ui/button";
 
 const FAQ: [string, string][] = [
-  ["Qual a diferença entre o Zuuping e a API oficial?", "A API oficial exige aprovação de templates e cobra por conversa. O Zuuping foca em integração rápida, preço fixo e sem fila de aprovação."],
+  ["Qual a diferença entre o WA-AKG e a API oficial?", "A API oficial exige aprovação de templates e cobra por conversa. O WA-AKG foca em integração rápida, preço fixo e sem fila de aprovação."],
   ["Quanto tempo leva para integrar?", "Minutos para o primeiro envio e poucos dias para um cenário completo. Há REST, Webhooks, Postman, Swagger e SDKs."],
   ["Preciso de um número de celular novo?", "Não obrigatoriamente. Recomendamos um número exclusivo para automação, separado do pessoal."],
   ["Funciona para alto volume de mensagens?", "Sim. Fila inteligente, retry e infraestrutura dimensionada para volume."],
@@ -32,11 +32,11 @@ export function FinalCta() {
   return (
     <section className="border-t border-border bg-secondary/30 px-4 pb-12">
       <div className="mx-auto max-w-6xl px-6 py-20 text-center">
-        <h2 className="text-3xl font-bold md:text-5xl">Pronto para conectar seu sistema ao Zuuping?</h2>
+        <h2 className="text-3xl font-bold md:text-5xl">Pronto para conectar seu sistema ao WA-AKG?</h2>
         <p className="mt-4 text-muted-foreground">2 dias grátis. Sem cartão de crédito. Sem complicação.</p>
         <Button asChild className="mt-8 h-[52px] rounded-full px-8 font-semibold"><a href={LINKS.signup}>Começar teste grátis</a></Button>
       </div>
-      <footer className="mx-auto max-w-6xl border-t border-border pt-8 text-center text-sm text-muted-foreground">© 2026 Zuuping. Todos os direitos reservados.</footer>
+      <footer className="mx-auto max-w-6xl border-t border-border pt-8 text-center text-sm text-muted-foreground">© 2026 WA-AKG. Todos os direitos reservados.</footer>
     </section>
   );
 }

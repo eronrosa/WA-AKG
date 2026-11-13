@@ -3,6 +3,7 @@ import { waManager } from "@/modules/whatsapp/manager";
 import { getAuthenticatedUser, canAccessSession } from "@/lib/api-auth";
 import { fireSentWebhook } from "@/lib/webhook";
 import Sticker from "wa-sticker-formatter";
+import { checkUploadSize } from "@/lib/limits";
 
 // POST: Send sticker from image
 export async function POST(
@@ -18,6 +19,8 @@ export async function POST(
         const { sessionId, jid } = await params;
         const formData = await request.formData();
         const file = formData.get("file") as File;
+        const tooLarge = checkUploadSize(file);
+        if (tooLarge) return tooLarge;
         
         if (!file) {
              return NextResponse.json({ status: false, message: "file is required", error: "file is required" }, { status: 400 });
@@ -39,7 +42,7 @@ export async function POST(
         // Convert File to Buffer
         const buffer = Buffer.from(await file.arrayBuffer());
 
-        const pack = formData.get("pack") as string || "Zuuping";
+        const pack = formData.get("pack") as string || "WA-AKG";
         const author = formData.get("author") as string || user.name || "User";
         const type = (formData.get("type") as string) || "full";
         const quality = parseInt(formData.get("quality") as string) || 50;

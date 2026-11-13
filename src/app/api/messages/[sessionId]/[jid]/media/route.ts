@@ -2,6 +2,7 @@
 import { NextResponse, NextRequest } from "next/server";
 import { getAuthenticatedUser, canAccessSession } from "@/lib/api-auth";
 import { ChatService } from "@/modules/whatsapp/chat.service";
+import { checkUploadSize } from "@/lib/limits";
 
 export async function POST(
     request: NextRequest,
@@ -16,6 +17,8 @@ export async function POST(
         const { sessionId, jid } = await params;
         const formData = await request.formData();
         const file = formData.get("file") as File;
+        const tooLarge = checkUploadSize(file);
+        if (tooLarge) return tooLarge;
         const type = formData.get("type") as string; // image, video, audio, document
         const caption = formData.get("caption") as string || "";
         

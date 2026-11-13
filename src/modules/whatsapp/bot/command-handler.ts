@@ -6,11 +6,11 @@ import sharp from "sharp";
 import fs from "fs/promises";
 import path from "path";
 import os from "os";
-import { exec } from "child_process";
+import { execFile } from "child_process";
 import { promisify } from "util";
 import { logger } from "@/lib/logger";
 
-const execAsync = promisify(exec);
+const execFileAsync = promisify(execFile);
 
 // Map to track start times for uptime
 const startTimes = new Map<string, number>();
@@ -28,7 +28,7 @@ const DEFAULT_CONFIG = {
     maxStickerDuration: 10,
     enablePing: true,
     enableUptime: true,
-    botName: "Zuuping Bot",
+    botName: "WA-AKG Bot",
     prefix: "#",
     removeBgApiKey: null as string | null
 };
@@ -254,7 +254,7 @@ export async function handleBotCommand(
 
                             // Compress Video using ffmpeg
                             // Extreme Compression: 8fps, CRF 40, 300k bitrate, ultrafast
-                            await execAsync(`ffmpeg -y -i "${tempInput}" -vf "scale=512:512:force_original_aspect_ratio=decrease,fps=10" -c:v libx264 -preset ultrafast -crf 40 -b:v 300k -maxrate 300k -bufsize 600k -an "${tempOutput}"`);
+                            await execFileAsync("ffmpeg", ["-y", "-i", tempInput, "-vf", "scale=512:512:force_original_aspect_ratio=decrease,fps=10", "-c:v", "libx264", "-preset", "ultrafast", "-crf", "40", "-b:v", "300k", "-maxrate", "300k", "-bufsize", "600k", "-an", tempOutput]);
 
                             buffer = await fs.readFile(tempOutput);
 
@@ -306,8 +306,8 @@ export async function handleBotCommand(
 
                     // Convert
                     const sticker = new Sticker(buffer as Buffer, {
-                        pack: (config as any).botName || "Zuuping Bot",
-                        author: "By " + ((config as any).botName || "Zuuping Bot"),
+                        pack: (config as any).botName || "WA-AKG Bot",
+                        author: "By " + ((config as any).botName || "WA-AKG Bot"),
                         type: "full", // full, crop, circle
                         quality: 15 // Extreme quality reduction for size
                     });
@@ -327,7 +327,7 @@ export async function handleBotCommand(
 
             case "menu":
             case "help": {
-                const botName = (config as any).botName || "Zuuping Bot";
+                const botName = (config as any).botName || "WA-AKG Bot";
                 const menu = `
 🤖 *${botName} Menu* 🤖
 

@@ -1,6 +1,7 @@
 import { NextResponse, NextRequest } from "next/server";
 import { waManager } from "@/modules/whatsapp/manager";
 import { getAuthenticatedUser, canAccessSession } from "@/lib/api-auth";
+import { checkUploadSize } from "@/lib/limits";
 
 // PUT: Update group picture
 export async function PUT(
@@ -17,6 +18,8 @@ export async function PUT(
         const decodedJid = decodeURIComponent(jid);
         const formData = await request.formData();
         const file = formData.get("file") as File;
+        const tooLarge = checkUploadSize(file);
+        if (tooLarge) return tooLarge;
 
         if (!file) {
             return NextResponse.json({ status: false, message: "file is required", error: "file is required" }, { status: 400 });

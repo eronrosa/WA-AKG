@@ -15,7 +15,7 @@ const PERSONAS = [
 export function Personas() {
   return (
     <section id="solucao" className="site-container audience-section pb-16 pt-10 md:pb-20 md:pt-12">
-      <h2 className="text-3xl font-bold md:text-4xl">Para quem a Zuuping é indicada?</h2>
+      <h2 className="text-3xl font-bold md:text-4xl">Para quem a WA-AKG é indicada?</h2>
       <div className="mt-7 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {PERSONAS.map(({ t, d, icon: Icon }) => (
           <Button asChild key={t} variant="outline" className="audience-card group h-auto min-h-[188px] whitespace-normal rounded-2xl bg-card px-7 py-6 text-left">
@@ -38,7 +38,7 @@ export function Flow() {
   return (
     <section className="mx-auto max-w-6xl px-4 py-20 text-center">
       <h2 className="text-3xl font-bold md:text-5xl">Em produção, em menos<br />de uma chamada HTTP</h2>
-      <p className="mt-4 text-muted-foreground">Seu sistema envia, o Zuuping entrega, o cliente responde.<br />Webhooks em tempo real fecham o ciclo.</p>
+      <p className="mt-4 text-muted-foreground">Seu sistema envia, o WA-AKG entrega, o cliente responde.<br />Webhooks em tempo real fecham o ciclo.</p>
       <div className="mt-12 grid grid-cols-1 gap-4 text-left md:grid-cols-3">
         <div className="rounded-2xl border border-border bg-card p-6">
           <p className="text-xs tracking-widest text-muted-foreground">SEU SISTEMA</p>
@@ -75,7 +75,7 @@ const USES = [
 export function UseCases() {
   return (
     <section className="mx-auto max-w-6xl px-4 py-20">
-      <h2 className="max-w-3xl text-3xl font-bold md:text-5xl">O que empresas e desenvolvedores constroem com a API REST de mensageria do Zuuping</h2>
+      <h2 className="max-w-3xl text-3xl font-bold md:text-5xl">O que empresas e desenvolvedores constroem com a API REST de mensageria do WA-AKG</h2>
       <p className="mt-4 text-muted-foreground">Veja casos reais de uso para vendas, atendimento, operações, notificações e integrações.</p>
       <div className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-2">
         {USES.map((u) => (
@@ -115,7 +115,7 @@ export function Compare() {
       <h2 className="text-3xl font-bold md:text-5xl">O que muda quando você para de improvisar na mensageria?</h2>
       <div className="mt-10 grid grid-cols-1 gap-4 text-left md:grid-cols-2">
         <div className="rounded-3xl border border-border bg-card p-8"><h3 className="mb-5 text-xl font-bold text-muted-foreground">API qualquer</h3>{BAD.map((b) => <p key={b} className="mb-3 flex gap-2 text-sm text-muted-foreground"><X className="h-4 w-4 text-destructive" />{b}</p>)}</div>
-        <div className="rounded-3xl border border-primary/50 bg-card bg-glow p-8"><h3 className="mb-5 text-xl font-bold text-primary">Com Zuuping</h3>{GOOD.map((b) => <p key={b} className="mb-3 flex gap-2 text-sm"><Check className="h-4 w-4 text-primary" />{b}</p>)}</div>
+        <div className="rounded-3xl border border-primary/50 bg-card bg-glow p-8"><h3 className="mb-5 text-xl font-bold text-primary">Com WA-AKG</h3>{GOOD.map((b) => <p key={b} className="mb-3 flex gap-2 text-sm"><Check className="h-4 w-4 text-primary" />{b}</p>)}</div>
       </div>
       <a href={LINKS.signup} className="mt-10 inline-block rounded-full bg-primary px-7 py-4 font-semibold text-primary-foreground shadow-glow">Começar teste grátis por 2 dias</a>
     </section>

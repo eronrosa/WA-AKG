@@ -18,7 +18,7 @@ export default async function DashboardLayout({
     const session = await auth();
     // @ts-ignore
     const systemConfig = await prisma.systemConfig.findUnique({ where: { id: "default" } });
-    const appName = systemConfig?.appName || "Zuuping";
+    const appName = systemConfig?.appName || "WA-AKG";
     const registrationEnabled = systemConfig?.enableRegistration ?? false;
 
     return (

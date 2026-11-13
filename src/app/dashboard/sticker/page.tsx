@@ -21,7 +21,7 @@ export default function StickerPage() {
     const [loading, setLoading] = useState(false);
 
     // Advanced options
-    const [pack, setPack] = useState("Zuuping");
+    const [pack, setPack] = useState("WA-AKG");
     const [author, setAuthor] = useState("User");
     const [quality, setQuality] = useState(50);
     const [type, setType] = useState("full");
@@ -38,7 +38,7 @@ export default function StickerPage() {
     const handleSend = async () => {
         if (!sessionId || !target || !file) return toast.error(t("toastFillFields"));
 
-        let jid = target.includes('@') ? target : `${target}@s.whatsapp.net`;
+        const jid = target.includes('@') ? target : `${target}@s.whatsapp.net`;
         const encodedJid = encodeURIComponent(jid);
 
         setLoading(true);

@@ -7,12 +7,12 @@ import { DeliveryDiagram } from "@/components/landing/DeliveryDiagram";
 import { LINKS } from "@/components/landing/links";
 import { cn } from "@/lib/utils";
 
-const NAV = ["Solução", "Zuuping Omni", "Desenvolvedor", "Partners", "Planos", "Integrações", "Blog"];
+const NAV = ["Solução", "WA-AKG Omni", "Desenvolvedor", "Partners", "Planos", "Integrações", "Blog"];
 
 // Where each menu item goes; items without a page yet stay on "#"
 const NAV_HREF: Record<string, string> = {
   "Solução": "#solucao",
-  "Zuuping Omni": "#recursos",
+  "WA-AKG Omni": "#recursos",
   "Desenvolvedor": LINKS.docs,
   "Partners": LINKS.partners,
   "Planos": "#planos",
@@ -24,12 +24,12 @@ export function Header() {
   return (
     <header className="site-header sticky top-0 z-50 bg-background/90 backdrop-blur-md">
       <div className="site-container flex h-[72px] items-center justify-between gap-4">
-        <a href="/" aria-label="Zuuping — início" className="text-2xl font-extrabold text-foreground">
+        <a href="/" aria-label="WA-AKG — início" className="text-2xl font-extrabold text-foreground">
           <span className="text-primary">Zuu</span>ping
         </a>
         <nav aria-label="Principal" className="hidden items-center gap-5 xl:flex">
           {NAV.map((n) => (
-            <a key={n} href={NAV_HREF[n] ?? "#"} className={cn("flex items-center gap-1 whitespace-nowrap text-xs transition-colors hover:text-foreground", n === "Zuuping Omni" ? "font-medium text-primary" : "text-muted-foreground")}>
+            <a key={n} href={NAV_HREF[n] ?? "#"} className={cn("flex items-center gap-1 whitespace-nowrap text-xs transition-colors hover:text-foreground", n === "WA-AKG Omni" ? "font-medium text-primary" : "text-muted-foreground")}>
               {n}
               {(n === "Solução" || n === "Desenvolvedor") && <ChevronDown className="h-3.5 w-3.5" />}
             </a>
@@ -45,7 +45,7 @@ export function Header() {
         </div>
       </div>
       {menuOpen && <nav id="mobile-navigation" aria-label="Menu móvel" className="site-container grid gap-1 border-t border-border py-4 xl:hidden">
-        {NAV.map((n) => <Button asChild key={n} variant="ghost" className={cn("justify-start", n === "Zuuping Omni" && "text-primary")}><a href={NAV_HREF[n] ?? "#"} onClick={() => setMenuOpen(false)}>{n}</a></Button>)}
+        {NAV.map((n) => <Button asChild key={n} variant="ghost" className={cn("justify-start", n === "WA-AKG Omni" && "text-primary")}><a href={NAV_HREF[n] ?? "#"} onClick={() => setMenuOpen(false)}>{n}</a></Button>)}
         <Button asChild variant="ghost" className="justify-start"><a href={LINKS.login}>Entrar</a></Button>
         <span className="flex items-center gap-2 px-4 py-2 text-xs text-muted-foreground"><Globe className="size-4 text-primary" /> PT</span>
       </nav>}

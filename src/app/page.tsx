@@ -5,7 +5,7 @@ import { Faq, FinalCta } from "@/components/landing/Faq";
 import { Features } from "@/components/landing/Features";
 import "./landing.css";
 
-const TITLE = "Zuuping — API REST de Mensageria nº 1 do Brasil";
+const TITLE = "WA-AKG — API REST de Mensageria nº 1 do Brasil";
 const DESC = "Conecte seu software à API REST de mensageria com +100 mil clientes, suporte nacional e integração plug & play.";
 
 export const metadata: Metadata = {

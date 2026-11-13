@@ -92,8 +92,8 @@ Rate limiting parameters and upload size thresholds.
 | :--- | :--- | :--- | :--- |
 | `SESSION_TIMEOUT_HOURS` | number | `24` | Hours after which user authentication sessions expire. |
 | `MAX_UPLOAD_SIZE_MB` | number | `50` | Maximum allowed file upload size (in MB) for media attachments. |
-| `ENABLE_RATE_LIMITING` | boolean | `true` | Protect API endpoints from brute-force/abuse via rate limits. |
-| `RATE_LIMIT_PER_MINUTE` | number | `60` | Max requests allowed per minute per IP address. |
+| `ENABLE_RATE_LIMITING` | boolean | `true` | Limits login and registration attempts per IP to stop brute-force attacks. |
+| `RATE_LIMIT_PER_MINUTE` | number | `10` | Max login/registration attempts per minute per IP address. |
 
 ---
 

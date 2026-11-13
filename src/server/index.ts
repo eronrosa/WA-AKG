@@ -105,12 +105,12 @@ app.prepare().then(async () => {
 
     // --- WA-AKG Monitor Heartbeat ---
     // Sends a ping every 30 seconds to the monitoring server
-    // Telemetry opt-out is supported via ENABLE_TELEMETRY="false" or DISABLE_TELEMETRY="true"
-    const isTelemetryEnabled = process.env.ENABLE_TELEMETRY !== "false" && process.env.DISABLE_TELEMETRY !== "true";
+    // Telemetry is opt-in: enabled only when ENABLE_TELEMETRY="true"
+    const isTelemetryEnabled = process.env.ENABLE_TELEMETRY === "true";
 
     if (isTelemetryEnabled) {
       const MONITOR_URL = "https://api-wa-akg.aikeigroup.net/api/ping";
-      const APP_NAME = process.env.APP_NAME || "Zuuping";
+      const APP_NAME = process.env.APP_NAME || "WA-AKG";
       const APP_VERSION = `v${pkg.version}`;
 
       const sendHeartbeat = async () => {
