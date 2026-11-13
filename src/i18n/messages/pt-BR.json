@@ -897,6 +897,33 @@
       "noResponse": "Nenhum corpo de resposta retornado do servidor.",
       "noLogSelected": "Nenhum Log Selecionado",
       "noLogSelectedDesc": "Selecione uma tentativa de webhook na barra lateral para inspecionar metadados e payloads."
+    },
+    "integration": {
+      "title": "Central de integração",
+      "description": "Todos os dados que outra plataforma pede para se conectar à Zuuping, em um só lugar.",
+      "step1": "1. Copie estes dados para a outra plataforma",
+      "apiUrl": "URL da API",
+      "apiUrlHint": "Endereço base das chamadas à API.",
+      "sessionId": "ID da sessão",
+      "sessionIdHint": "Sessão selecionada: {name}. Troque a sessão na barra superior, se precisar.",
+      "apiKey": "Chave de API",
+      "apiKeyHint": "Enviada no cabeçalho X-API-Key. Não compartilhe.",
+      "generateKey": "Gerar chave de API",
+      "toggleKey": "Mostrar ou ocultar a chave",
+      "copy": "Copiar",
+      "generate": "Gerar",
+      "step2": "2. Cadastre aqui o webhook da outra plataforma",
+      "step2Desc": "Cole a URL de webhook que a outra plataforma fornece. A Zuuping passa a enviar para ela cada mensagem recebida (evento message.received).",
+      "webhookUrl": "URL do webhook (fornecida pela outra plataforma)",
+      "webhookSecret": "Segredo do webhook (opcional)",
+      "webhookSecretPlaceholder": "Clique em Gerar ou cole o segredo da outra plataforma",
+      "webhookSecretHint": "Use o mesmo valor aqui e na outra plataforma. Ele assina as mensagens no cabeçalho X-Webhook-Signature (HMAC SHA-256). Copie antes de cadastrar: ele não é mostrado de novo.",
+      "register": "Cadastrar webhook",
+      "registered": "Webhook cadastrado",
+      "registerFailed": "Não foi possível cadastrar o webhook",
+      "invalidUrl": "Informe uma URL que comece com https://",
+      "noSession": "Nenhuma sessão selecionada",
+      "defaultName": "Integração"
     }
   },
   "sticker": {
