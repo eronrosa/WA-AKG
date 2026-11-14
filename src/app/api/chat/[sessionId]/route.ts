@@ -31,12 +31,36 @@ export async function GET(
             return NextResponse.json({ status: false, message: "Session not found", error: 'Session not found' }, { status: 404 });
         }
 
-        const dbSessionId = session.id;
+        // Query params: limit (1-200, default 50), page (default 1),
+        // filter (all | private | groups), search (JID, name or push name)
+        const query = request.nextUrl.searchParams;
+        const limit = parseInt(query.get("limit") || "50", 10);
+        const page = parseInt(query.get("page") || "1", 10);
+        const filterParam = query.get("filter");
+        if (filterParam && !["all", "private", "groups"].includes(filterParam)) {
+            return NextResponse.json({ status: false, message: "Invalid filter. Use all, private or groups", error: "Invalid filter" }, { status: 400 });
+        }
 
-        // Fetch chats using the new ChatService
-        const chatList = await ChatService.getChatsList(session.id);
+        const result = await ChatService.getChatsPage(session.id, {
+            limit: Number.isFinite(limit) ? limit : 50,
+            page: Number.isFinite(page) ? page : 1,
+            filter: (filterParam as "all" | "private" | "groups" | null) || undefined,
+            search: query.get("search") || undefined,
+        });
+        const totalPages = Math.max(Math.ceil(result.total / result.limit), 1);
 
-        return NextResponse.json({ status: true, message: "Chats fetched successfully", data: chatList });
+        return NextResponse.json({
+            status: true,
+            message: "Chats fetched successfully",
+            data: result.chats,
+            pagination: {
+                page: result.page,
+                limit: result.limit,
+                total: result.total,
+                totalPages,
+                hasMore: result.page < totalPages,
+            },
+        });
     } catch (error) {
         console.error("Chat API error:", error);
         return NextResponse.json({ status: false, message: "Failed to fetch chats", error: 'Failed to fetch chats' }, { status: 500 });

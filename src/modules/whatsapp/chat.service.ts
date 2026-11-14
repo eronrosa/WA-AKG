@@ -119,6 +119,101 @@ export class ChatService {
     }
 
     /**
+     * Page-based chat list for API integrations. Unlike getChatsList (cursor by timestamp),
+     * this is stable when several chats share the same last-message second, reports the total,
+     * and can walk through every chat of a session.
+     */
+    static async getChatsPage(
+        dbSessionId: string,
+        options: { limit?: number; page?: number; filter?: ChatListFilter; search?: string } = {}
+    ) {
+        const limit = Math.min(Math.max(options.limit ?? 50, 1), 200);
+        const page = Math.max(options.page ?? 1, 1);
+        const offset = (page - 1) * limit;
+
+        const filterSql: Record<ChatListFilter, string> = {
+            all: "AND t.remoteJid NOT LIKE '%@broadcast'",
+            private: "AND t.remoteJid NOT LIKE '%@g.us' AND t.remoteJid NOT LIKE '%@broadcast' AND t.remoteJid NOT LIKE '%@newsletter'",
+            groups: "AND t.remoteJid LIKE '%@g.us'",
+        };
+        const where: string[] = [];
+        const whereParams: any[] = [];
+        if (options.filter && Object.hasOwn(filterSql, options.filter)) where.push(filterSql[options.filter]);
+        const search = options.search?.trim();
+        if (search) {
+            const like = `%${search}%`;
+            where.push("AND (t.remoteJid LIKE ? OR t.remoteJid IN (SELECT jid FROM `Contact` WHERE sessionId = ? AND (name LIKE ? OR notify LIKE ?)))");
+            whereParams.push(like, dbSessionId, like, like);
+        }
+
+        const chatsSql = `
+            FROM (
+                SELECT remoteJid, MAX(timestamp) AS max_ts
+                FROM \`Message\`
+                WHERE sessionId = ?
+                GROUP BY remoteJid
+            ) t
+            WHERE 1 = 1 ${where.join(" ")}
+        `;
+
+        const [rows, countRows] = await Promise.all([
+            prisma.$queryRawUnsafe<Array<{ remoteJid: string; max_ts: Date }>>(
+                `SELECT t.remoteJid, t.max_ts ${chatsSql} ORDER BY t.max_ts DESC, t.remoteJid ASC LIMIT ? OFFSET ?`,
+                dbSessionId, ...whereParams, limit, offset
+            ),
+            prisma.$queryRawUnsafe<Array<{ total: bigint | number }>>(
+                `SELECT COUNT(*) AS total ${chatsSql}`,
+                dbSessionId, ...whereParams
+            ),
+        ]);
+        const total = Number(countRows[0]?.total ?? 0);
+        if (rows.length === 0) return { chats: [], total, page, limit };
+
+        const jids = rows.map(r => r.remoteJid);
+        const oldestTs = rows.reduce((min, r) => (r.max_ts < min ? r.max_ts : min), rows[0].max_ts);
+        const [lastMessages, contacts, groups] = await Promise.all([
+            prisma.message.findMany({
+                where: { sessionId: dbSessionId, remoteJid: { in: jids }, timestamp: { gte: oldestTs } },
+                orderBy: { timestamp: "desc" },
+                select: { remoteJid: true, content: true, timestamp: true, type: true, fromMe: true },
+            }),
+            prisma.contact.findMany({
+                where: { sessionId: dbSessionId, jid: { in: jids } },
+                select: { jid: true, name: true, notify: true, profilePic: true }
+            }),
+            prisma.group.findMany({
+                where: { sessionId: dbSessionId, jid: { in: jids } },
+                select: { jid: true, subject: true }
+            }),
+        ]);
+
+        const lastByJid = new Map<string, (typeof lastMessages)[number]>();
+        for (const m of lastMessages) if (!lastByJid.has(m.remoteJid)) lastByJid.set(m.remoteJid, m);
+        const infoMap = new Map<string, { name: string | null; notify: string | null; profilePic: string | null }>();
+        contacts.forEach(c => infoMap.set(c.jid, { name: c.name, notify: c.notify, profilePic: c.profilePic }));
+        groups.forEach(g => infoMap.set(g.jid, { name: g.subject, notify: g.subject, profilePic: null }));
+
+        const chats = rows.map(r => {
+            const info = infoMap.get(r.remoteJid);
+            const last = lastByJid.get(r.remoteJid);
+            return {
+                jid: r.remoteJid,
+                name: info?.name || null,
+                notify: info?.notify || null,
+                profilePic: info?.profilePic || null,
+                lastMessage: {
+                    content: last?.content ?? null,
+                    timestamp: (last?.timestamp ?? r.max_ts).toISOString(),
+                    type: last?.type ?? null,
+                    fromMe: last?.fromMe ?? null,
+                },
+            };
+        });
+
+        return { chats, total, page, limit };
+    }
+
+    /**
      * Get messages for a specific chat with cursor pagination (infinite scroll).
      * @param before ISO timestamp — load messages older than this
      * @param limit max messages to return
