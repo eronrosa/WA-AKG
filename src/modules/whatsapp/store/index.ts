@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import type { WASocket, WAMessage, Contact } from "@whiskeysockets/baileys";
 import { normalizeMessageContent } from "@whiskeysockets/baileys";
 import { onMessageReceived, onMessageSent, dispatchWebhook, downloadAndSaveMedia } from "@/lib/webhook";
+import { mergeLidChats, resolveLidViaSocket } from "@/lib/lid-resolver";
 import { handleBotCommand, setSessionStartTime } from "../bot/command-handler";
 import { resolveToPhoneJid, isLidJid, normalizeJid } from "@/lib/jid-utils";
 
@@ -118,6 +119,8 @@ export const bindSessionStore = (sock: WASocket, sessionId: string, io: Server |
         // Note: Contacts and Chats are synced by src/modules/whatsapp/store/contacts.ts
         // We only handle messages here to avoid P2002 Unique Constraint Race Conditions.
         logger.debug("Store", `Finished syncing messages`);
+        // History often arrives before the LID -> phone pairs: merge split chats afterwards.
+        mergeLidChats(sessionId).catch(() => {});
     });
 
     // Handle Contacts Upsert
@@ -518,6 +521,10 @@ async function processAndSaveMessage(
     let normalizedRemoteJid = remoteJid;
     if (isLidJid(remoteJid)) {
         normalizedRemoteJid = await resolveToPhoneJid(remoteJid, dbSessionId, remoteJidAlt);
+        // Contacts may not know this LID yet (common during history sync): ask the connection.
+        if (isLidJid(normalizedRemoteJid)) {
+            normalizedRemoteJid = (await resolveLidViaSocket(sessionId, remoteJid)) || normalizedRemoteJid;
+        }
     }
     if (senderJid && isLidJid(senderJid)) {
         senderJid = await resolveToPhoneJid(senderJid, dbSessionId, remoteJidAlt);
