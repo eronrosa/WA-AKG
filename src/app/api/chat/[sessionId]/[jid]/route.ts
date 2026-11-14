@@ -34,17 +34,39 @@ export async function GET(
 
         const dbSessionId = session.id;
 
+        // Query params: limit (1-500, default 100) and before (ISO timestamp) to walk back in history
+        const query = request.nextUrl.searchParams;
+        const parsedLimit = parseInt(query.get("limit") || "100", 10);
+        const limit = Math.min(Math.max(Number.isFinite(parsedLimit) ? parsedLimit : 100, 1), 500);
+        const beforeParam = query.get("before");
+        const before = beforeParam ? new Date(beforeParam) : null;
+        if (before && Number.isNaN(before.getTime())) {
+            return NextResponse.json({ status: false, message: "Invalid 'before'. Use an ISO timestamp", error: "Invalid 'before'" }, { status: 400 });
+        }
+
         const messages = await prisma.message.findMany({
             where: {
                 sessionId: dbSessionId,
-                remoteJid: decodedJid
+                remoteJid: decodedJid,
+                ...(before ? { timestamp: { lt: before } } : {})
             },
             orderBy: { timestamp: 'desc' }, // Fetch NEWEST first
-            take: 100
+            take: limit + 1 // one extra row tells whether older messages exist
         });
+
+        const hasMore = messages.length > limit;
+        if (hasMore) messages.pop();
 
         // Reverse to show oldest -> newest
         messages.reverse();
+
+        const pagination = {
+            limit,
+            count: messages.length,
+            hasMore,
+            // Pass this value as ?before= to get the previous (older) page
+            nextBefore: hasMore && messages.length > 0 ? messages[0].timestamp.toISOString() : null,
+        };
 
         // Enrich with participant info if it's a group
         if (decodedJid.endsWith('@g.us')) {
@@ -71,11 +93,11 @@ export async function GET(
                     };
                 });
 
-                return NextResponse.json({ status: true, data: enrichedMessages });
+                return NextResponse.json({ status: true, data: enrichedMessages, pagination });
             }
         }
 
-        return NextResponse.json({ status: true, data: messages });
+        return NextResponse.json({ status: true, data: messages, pagination });
     } catch (error) {
         console.error("Fetch messages error:", error);
         return NextResponse.json({ status: false, message: 'Failed to fetch messages', error: 'Failed to fetch messages' }, { status: 500 });

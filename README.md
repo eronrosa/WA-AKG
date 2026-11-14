@@ -205,6 +205,9 @@ WA-AKG provides a comprehensive REST API to integrate WhatsApp Messaging directl
 | `GET` | `/api/groups/{sessionId}` | List all available groups |
 | `POST` | `/api/webhooks/{sessionId}` | Register real-time event listeners |
 | `POST` | `/api/autoreplies/{sessionId}` | Create context-aware auto-replies |
+| `GET` | `/api/chat/{sessionId}` | Paginated chat list (`limit`, `page`, `filter`, `search`) |
+| `GET` | `/api/chat/{sessionId}/{jid}` | Messages of a chat (`limit`, `before`) |
+| `POST` | `/api/chat/{sessionId}/{jid}/history` | Ask the phone for older messages of a chat |
 | `GET` | `/api/contacts/{jid}/picture` | Profile picture URL of a contact or group |
 | `POST` | `/api/auth/register` | Register new users via the web securely |
 
@@ -217,6 +220,54 @@ curl -X POST http://localhost:3000/api/messages/session_01/62812345678@s.whatsap
     "message": { "text": "Hello from WA-AKG!" }
   }'
 ```
+
+### Listing Chats and Reading History
+
+**Chat list: `GET /api/chat/{sessionId}`**
+
+| Query | Default | Description |
+| :--- | :--- | :--- |
+| `limit` | `50` | Chats per page, 1 to 200 |
+| `page` | `1` | Page number |
+| `filter` | none | `private` (1:1 chats only), `groups`, or `all` (everything except status/broadcast) |
+| `search` | none | Matches the JID, the contact name or the push name |
+
+Chats come from the stored messages, newest first, and include archived chats. The response carries the total, so a client can walk every page:
+
+```bash
+curl "http://localhost:3000/api/chat/session_01?filter=private&limit=200&page=1" -H "X-API-Key: your_api_key"
+```
+
+```json
+{
+  "status": true,
+  "message": "Chats fetched successfully",
+  "data": [
+    {
+      "jid": "5511999999999@s.whatsapp.net",
+      "name": "Maria",
+      "notify": "Maria",
+      "profilePic": null,
+      "lastMessage": { "content": "Olá", "timestamp": "2026-11-13T22:00:00.000Z", "type": "TEXT", "fromMe": false }
+    }
+  ],
+  "pagination": { "page": 1, "limit": 200, "total": 812, "totalPages": 5, "hasMore": true }
+}
+```
+
+**Messages of a chat: `GET /api/chat/{sessionId}/{jid}`**
+
+Returns messages oldest to newest. `limit` goes from 1 to 500 (default 100). To go further back, pass the `pagination.nextBefore` value as `?before=`:
+
+```json
+{ "status": true, "data": [ ... ], "pagination": { "limit": 100, "count": 100, "hasMore": true, "nextBefore": "2026-11-01T14:49:10.000Z" } }
+```
+
+For a complete import, prefer `GET /api/messages/{sessionId}/search?jid={jid}&limit=100&page=N`: it is offset based, reports `total` and `pages`, and cannot skip messages that share the same second.
+
+**Older history on demand: `POST /api/chat/{sessionId}/{jid}/history`**
+
+Asks the phone for up to 50 messages older than the oldest one stored for that chat (body: `{ "count": 50 }`). It answers `202` immediately; the phone replies a few seconds later and the messages are stored like any other history. The connection and existing messages are not touched. WhatsApp decides how far back it goes, and the phone must be online.
 
 ### Profile Pictures
 
