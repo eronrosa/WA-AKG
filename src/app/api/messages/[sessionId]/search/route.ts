@@ -88,6 +88,7 @@ export async function GET(
                     pushName: true,
                     type: true,
                     content: true,
+                    mediaUrl: true,
                     status: true,
                     timestamp: true,
                     quoteId: true,
