@@ -259,6 +259,9 @@ export class WhatsAppInstance {
 
                 this.io?.to(this.sessionId).emit("connection.update", { status: "CONNECTED", qr: null });
 
+                // Merge chats that were split between a phone number and its LID (runs in background).
+                import("@/lib/lid-resolver").then(({ mergeLidChats }) => mergeLidChats(this.sessionId)).catch(() => {});
+
                 try {
                     await syncGroups(this.socket as WASocket, this.sessionId);
                 } catch (e) {

@@ -530,7 +530,11 @@ export async function onMessageReceived(sessionId: string, message: any, existin
 
     // --- Consistent JID Normalization ---
     // Always prefer @s.whatsapp.net format over @lid
-    const normalizedFrom = await resolveToPhoneJid(remoteJid, sessionId, remoteJidAlt);
+    let normalizedFrom = await resolveToPhoneJid(remoteJid, sessionId, remoteJidAlt);
+    if (isLidJid(normalizedFrom)) {
+        const { resolveLidViaSocket } = await import("./lid-resolver");
+        normalizedFrom = (await resolveLidViaSocket(sessionId, remoteJid)) || normalizedFrom;
+    }
 
     // "sender" is who sent it. In DM: remoteJid. In Group: participant.
     const senderJid: string = isGroup ? (participant || "") : remoteJid;
@@ -641,7 +645,11 @@ export async function onMessageSent(sessionId: string, message: any, existingFil
     }
 
     // --- Consistent JID Normalization (same as onMessageReceived) ---
-    const normalizedFrom = await resolveToPhoneJid(remoteJid, sessionId, remoteJidAlt);
+    let normalizedFrom = await resolveToPhoneJid(remoteJid, sessionId, remoteJidAlt);
+    if (isLidJid(normalizedFrom)) {
+        const { resolveLidViaSocket } = await import("./lid-resolver");
+        normalizedFrom = (await resolveLidViaSocket(sessionId, remoteJid)) || normalizedFrom;
+    }
 
     // For sent messages, sender is "ME" (self)
     // But we still normalize the participant JID if in a group
